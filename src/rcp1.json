@@ -1,0 +1,25 @@
+{ "class": "GraphLinksModel",
+  "linkKeyProperty": "key",
+  "linkFromPortIdProperty": "frompid",
+  "linkToPortIdProperty": "topid",
+  "modelData": {"canRelink":true},
+  "nodeDataArray": [
+{"key":31,"category":"Filter","name":"Boston, Jan2014"},
+{"key":32,"category":"Filter","name":"Boston, 2014"},
+{"key":41,"category":"Group","name":"Sales"},
+{"key":42,"category":"Group","name":"Total Sales"},
+{"key":51,"category":"Join","name":"Product Name"},
+{"key":61,"category":"Sort","name":"Product Name"},
+{"key":71,"category":"Export","name":"File"},
+{"key":1,"category":"Table","name":"Product"}
+],
+  "linkDataArray": [
+{"from":31,"frompid":"OUT","to":41,"key":-10},
+{"from":32,"frompid":"OUT","to":42,"key":-11},
+{"from":41,"frompid":"OUT","to":51,"topid":"L","key":-12},
+{"from":42,"frompid":"OUT","to":51,"topid":"R","key":-13},
+{"from":51,"frompid":"OUT","to":61,"key":-14},
+{"from":61,"frompid":"OUT","to":71,"key":-15},
+{"from":1,"to":31,"frompid":"OUT","topid":"","key":-1},
+{"from":1,"to":32,"frompid":"OUT","topid":"","key":-2}
+]}
