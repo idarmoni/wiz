@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 //import Typography from '@mui/material/Typography';
 
 import PropTypes from 'prop-types';
@@ -7,12 +7,39 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 
 import Canvas from './Canvas'
+import axios from 'axios';
+
+const fs = require("fs")
 
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
+    
   
-    let recipe = require('./rcp'+index+'.json')
+    const fileName = 'rcp'+index+'.json'
+
+    
+    const [data, setData] = useState("");
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+      const fetchData = async () => {
+        const result = await axios(
+          `http://localhost:3001/cats/files/`+fileName,
+        ).then(response=>{
+          setData(response.data)
+        })
+        .catch(error=>{
+          console.erroe("error fetching data: ",error);
+        })
+        .finally(()=>{
+          setLoading(false)
+        })
+      };
+  
+      fetchData();
+    }, []);
+    if(loading) return "loading..."
+    
     return (
       <div
         role="tabpanel"
@@ -22,7 +49,7 @@ function TabPanel(props) {
         {...other}
 
       >
-      <Canvas recipe = {recipe} rcpName={'./rcp'+index+'.json'}/>
+      <Canvas recipe = {data} rcpName={'./rcp'+index+'.json'}/>
       </div>
     );
   }
@@ -57,9 +84,9 @@ function TabPanel(props) {
             <Tab label="Item Three" {...a11yProps(2)} />
           </Tabs>
         </Box>
-        <TabPanel value={value} index={0}/>    
-        <TabPanel value={value} index={1}/>
-        <TabPanel value={value} index={2}/>
+        <TabPanel value={value} onChange={handleChange} index={0}/>    
+        <TabPanel value={value} onChange={handleChange} index={1}/>
+        <TabPanel value={value} onChange={handleChange} index={2}/>
       </Box>
     );
   }
