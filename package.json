@@ -2,11 +2,15 @@
   "name": "gojs-react-basic",
   "version": "1.0.1",
   "description": "An example project demonstrating usage of GoJS and React together",
+  "main": "src/index.js",
   "private": true,
+  "entities": "['src/**/*.entity.{ts,js}']",
   "scripts": {
     "start": "react-scripts start",
+    "elec": "electron .",
     "build": "react-scripts build",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js"
   },
   "keywords": [
     "react",
@@ -42,5 +46,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "electron": "^16.0.7"
+  }
 }

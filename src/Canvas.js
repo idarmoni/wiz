@@ -13,38 +13,11 @@ import './App.css';
  * and modelData for demonstration purposes. Note, though, that
  * both are optional props in ReactDiagram.
  */
-interface AppState {
-  
-  nodeCategoryProperty: string;
-  selectedData: go.ObjectData | null;
-  skipsDiagramUpdate: boolean;
-  model:any
-  
-}
 
 
-interface DiagramModel{
-  class: string;
-  linkFromPortIdProperty : string;
-  linkToPortIdProperty : string;
-  nodeDataArray: Array<go.ObjectData>;
-  linkDataArray: Array<go.ObjectData>;
-  linkKeyProperty: string
-  
-  modelData: go.ObjectData;
-}
-
-interface Propss{
-  recipe:JSON
-  rcpName:string
-}
-
-class Canvas extends React.Component<Propss, AppState> {
+class Canvas extends React.Component {
   // Maps to store key -> arr index for quick lookups
-  private mapNodeKeyIdx: Map<go.Key, number>;
-  private mapLinkKeyIdx: Map<go.Key, number>;
-
-  constructor(props: Propss) {
+  constructor(props) {
     super(props);
 
   
@@ -55,8 +28,8 @@ class Canvas extends React.Component<Propss, AppState> {
       model:this.props.recipe
   };
     // init maps
-    this.mapNodeKeyIdx = new Map<go.Key, number>();
-    this.mapLinkKeyIdx = new Map<go.Key, number>();
+    this.mapNodeKeyIdx = new Map();
+    this.mapLinkKeyIdx = new Map();
     // bind handler methods
     this.handleDiagramEvent = this.handleDiagramEvent.bind(this);
     this.handleModelChange = this.handleModelChange.bind(this);
@@ -70,13 +43,13 @@ class Canvas extends React.Component<Propss, AppState> {
    * On ChangedSelection, find the corresponding data and set the selectedData state.
    * @param e a GoJS DiagramEvent
    */
-  public handleDiagramEvent(e: go.DiagramEvent) {
+  handleDiagramEvent(e) {
     const name = e.name;
     switch (name) {
       case 'ChangedSelection': {
         const sel = e.subject.first();
         this.setState(
-          produce((draft: AppState) => {
+          produce((draft) => {
             if (sel) {
               if (sel instanceof go.Node) {
                 const idx = this.mapNodeKeyIdx.get(sel.key);
@@ -107,7 +80,7 @@ class Canvas extends React.Component<Propss, AppState> {
    * This method iterates over those changes and updates state to keep in sync with the GoJS model.
    * @param obj a JSON-formatted string
    */
-  public handleModelChange(obj: go.IncrementalData) {
+   handleModelChange(obj) {
     const insertedNodeKeys = obj.insertedNodeKeys;
     const modifiedNodeData = obj.modifiedNodeData;
     const removedNodeKeys = obj.removedNodeKeys;
@@ -117,13 +90,13 @@ class Canvas extends React.Component<Propss, AppState> {
     const modifiedModelData = obj.modelData;
 
     // maintain maps of modified data so insertions don't need slow lookups
-    const modifiedNodeMap = new Map<go.Key, go.ObjectData>();
-    const modifiedLinkMap = new Map<go.Key, go.ObjectData>();
+    const modifiedNodeMap = new Map();
+    const modifiedLinkMap = new Map();
     this.setState(
-      produce((draft: AppState) => {
+      produce((draft) => {
         let narr = draft.model.nodeDataArray;
         if (modifiedNodeData) {
-          modifiedNodeData.forEach((nd: go.ObjectData) => {
+          modifiedNodeData.forEach((nd) => {
             modifiedNodeMap.set(nd.key, nd);
             const idx = this.mapNodeKeyIdx.get(nd.key);
             if (idx !== undefined && idx >= 0) {
@@ -135,7 +108,7 @@ class Canvas extends React.Component<Propss, AppState> {
           });
         }
         if (insertedNodeKeys) {
-          insertedNodeKeys.forEach((key: go.Key) => {
+          insertedNodeKeys.forEach((key) => {
             const nd = modifiedNodeMap.get(key);
             const idx = this.mapNodeKeyIdx.get(key);
             if (nd && idx === undefined) {  // nodes won't be added if they already exist
@@ -145,7 +118,7 @@ class Canvas extends React.Component<Propss, AppState> {
           });
         }
         if (removedNodeKeys) {
-          narr = narr.filter((nd: go.ObjectData) => {
+          narr = narr.filter((nd) => {
             if (removedNodeKeys.includes(nd.key)) {
               return false;
             }
@@ -156,7 +129,7 @@ class Canvas extends React.Component<Propss, AppState> {
 
         let larr = draft.model.linkDataArray;
         if (modifiedLinkData) {
-          modifiedLinkData.forEach((ld: go.ObjectData) => {
+          modifiedLinkData.forEach((ld) => {
             modifiedLinkMap.set(ld.key, ld);
             const idx = this.mapLinkKeyIdx.get(ld.key);
             if (idx !== undefined && idx >= 0) {
@@ -168,7 +141,7 @@ class Canvas extends React.Component<Propss, AppState> {
           });
         }
         if (insertedLinkKeys) {
-          insertedLinkKeys.forEach((key: go.Key) => {
+          insertedLinkKeys.forEach((key) => {
             const ld = modifiedLinkMap.get(key);
             const idx = this.mapLinkKeyIdx.get(key);
             if (ld && idx === undefined) {  // links won't be added if they already exist
@@ -178,7 +151,7 @@ class Canvas extends React.Component<Propss, AppState> {
           });
         }
         if (removedLinkKeys) {
-          larr = larr.filter((ld: go.ObjectData) => {
+          larr = larr.filter((ld) => {
             if (removedLinkKeys.includes(ld.key)) {
               return false;
             }
@@ -201,10 +174,10 @@ class Canvas extends React.Component<Propss, AppState> {
    * @param value the new value of that property
    * @param isBlur whether the input event was a blur, indicating the edit is complete
    */
-  public handleInputChange(path: string, value: string, isBlur: boolean) {
+  handleInputChange(path, value, isBlur) {
     this.setState(
-      produce((draft: AppState) => {
-        const data = draft.selectedData as go.ObjectData;  // only reached if selectedData isn't null
+      produce((draft) => {
+        const data = draft.selectedData;  // only reached if selectedData isn't null
         data[path] = value;
         if (isBlur) {
           const key = data.key;
@@ -230,13 +203,13 @@ class Canvas extends React.Component<Propss, AppState> {
    * Handle changes to the checkbox on whether to allow relinking.
    * @param e a change event from the checkbox
    */
-  public handleRelinkChange(e: any) {/*
+  handleRelinkChange(e) {/*
     const target = e.target;
     const value = target.checked;
     this.setState({ modelData: { canRelink: value }, skipsDiagramUpdate: false });*/
   }
 
-  public render() {
+  render() {
     const selectedData = this.state.selectedData;
     let inspector;
     if (selectedData !== null) {
