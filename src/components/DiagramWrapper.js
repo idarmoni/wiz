@@ -3,7 +3,7 @@
 */
 
 import * as go from 'gojs';
-import { ReactDiagram ,ReactPalette} from 'gojs-react';
+import { ReactDiagram, ReactPalette } from 'gojs-react';
 
 import { GuidedDraggingTool } from '../GuidedDraggingTool';
 
@@ -11,32 +11,13 @@ import './Diagram.css';
 
 var fs = require('browserify-fs');
 
-var nodeTemplateMap = new go.Map<string, go.Node>();
+var nodeTemplateMap = new go.Map();
 
 var $ = go.GraphObject.make;
 
-var temp='start'
+var temp = 'start'
 
-interface DiagramProps {
-  rcpName:string
-  model : DiagramModel
-  skipsDiagramUpdate: boolean;
-  onDiagramEvent: (e: go.DiagramEvent) => void;
-  onModelChange: (e: go.IncrementalData) => void;
-}
-
-
-interface DiagramModel{
-  class: string;
-  linkFromPortIdProperty : string;
-  linkToPortIdProperty : string;
-  nodeDataArray: Array<go.ObjectData>;
-  linkDataArray: Array<go.ObjectData>;
-  
-  modelData: go.ObjectData;
-}
-
-function makePort(name: string, leftside: boolean): go.Panel {
+function makePort(name, leftside) {
   var port = $(go.Shape, "Rectangle",
     {
       fill: "gray", stroke: null,
@@ -71,7 +52,7 @@ function makePort(name: string, leftside: boolean): go.Panel {
   return panel;
 }
 
-function makeTemplate(typename: string, icon: string, background: string, shape: string, inports: Array<go.Panel>, outports: Array<go.Panel>) {
+function makeTemplate(typename, icon, background, shape, inports, outports) {
   var node = $(go.Node, "Spot",
     $(go.Panel, "Auto",
       { width: 100, height: 120 },
@@ -120,75 +101,57 @@ function makeTemplate(typename: string, icon: string, background: string, shape:
   nodeTemplateMap.add(typename, node);
 }
 
-export const DiagramWrapper= function(props:DiagramProps) {
+export const DiagramWrapper = function (props) {
 
 
-  
-  
-  var nodeDataArray=props.model.nodeDataArray
-  /*
-  private save() {
-    fs.writeFile('rcp0.json',temp,function (err:any) {
-      if (err) return console.log(err);
-      console.log('Hello World > helloworld.txt');})
 
-    //document.getElementById("mySavedModel").value = myDiagram.model.toJson();
-    //myDiagram.isModified = false;
-  }*/
-  //private load() {
-    //diagram.model = go.Model.fromJson("./rcp0.json")
-    //fs.readFile("./rcp0.json", function(err:any, buf:any) {
-      
-      //console.log(buf.toString());
-    //});
-    //iagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
-  //}
 
+  var nodeDataArray = props.model.nodeDataArray
   const diagram =
-  $(go.Diagram,
-    {
-      'undoManager.isEnabled': true,  // must be set to allow for model change listening
-      // 'undoManager.maxHistoryLength': 0,  // uncomment disable undo/redo functionality
-      'clickCreatingTool.archetypeNodeData': { text: 'new node', color: 'lightblue' },
-      draggingTool: new GuidedDraggingTool(),  // defined in GuidedDraggingTool.ts
-      'draggingTool.horizontalGuidelineColor': 'blue',
-      'draggingTool.verticalGuidelineColor': 'blue',
-      'draggingTool.centerGuidelineColor': 'green',
-      'draggingTool.guidelineWidth': 1,
-      model: $(go.GraphLinksModel,
-        {
-          linkKeyProperty: 'key',  // IMPORTANT! must be defined for merges and data sync when using GraphLinksModel
-          // positive keys for nodes
-          linkFromPortIdProperty: "frompid",  // required information:
-          linkToPortIdProperty: "topid",      // identifies data property names
-          makeUniqueKeyFunction: (m: go.Model, data: any) => {
-            let k = data.key || 1;
-            while (m.findNodeDataForKey(k)) k++;
-            data.key = k;
-            return k;
-          },
-          // negative keys for links
-          makeUniqueLinkKeyFunction: (m: go.GraphLinksModel, data: any) => {
-            let k = data.key || -1;
-            while (m.findLinkDataForKey(k)) k--;
-            data.key = k;
-            return k;
-          }
-        })
-    });
+    $(go.Diagram,
+      {
+        'undoManager.isEnabled': true,  // must be set to allow for model change listening
+        // 'undoManager.maxHistoryLength': 0,  // uncomment disable undo/redo functionality
+        'clickCreatingTool.archetypeNodeData': { text: 'new node', color: 'lightblue' },
+        draggingTool: new GuidedDraggingTool(),  // defined in GuidedDraggingTool.ts
+        'draggingTool.horizontalGuidelineColor': 'blue',
+        'draggingTool.verticalGuidelineColor': 'blue',
+        'draggingTool.centerGuidelineColor': 'green',
+        'draggingTool.guidelineWidth': 1,
+        model: $(go.GraphLinksModel,
+          {
+            linkKeyProperty: 'key',  // IMPORTANT! must be defined for merges and data sync when using GraphLinksModel
+            // positive keys for nodes
+            linkFromPortIdProperty: "frompid",  // required information:
+            linkToPortIdProperty: "topid",      // identifies data property names
+            makeUniqueKeyFunction: (m, data) => {
+              let k = data.key || 1;
+              while (m.findNodeDataForKey(k)) k++;
+              data.key = k;
+              return k;
+            },
+            // negative keys for links
+            makeUniqueLinkKeyFunction: (m, data) => {
+              let k = data.key || -1;
+              while (m.findLinkDataForKey(k)) k--;
+              data.key = k;
+              return k;
+            }
+          })
+      });
   /**
    * Diagram initialization method, which is passed to the ReactDiagram component.
    * This method is responsible for making the diagram and initializing the model, any templates,
    * and maybe doing other initialization tasks like customizing tools.
    * The model's data should not be set here, as the ReactDiagram component handles that.
    */
-  const initDiagram=()=> {
+  const initDiagram = () => {
     // set your license key here before creating the diagram: go.Diagram.licenseKey = "...";
-    
 
-        diagram.addDiagramListener("ChangingSelection", function(e) {
-          temp = diagram.model.toJson();
-        });
+
+    diagram.addDiagramListener("ChangingSelection", function (e) {
+      temp = diagram.model.toJson();
+    });
     makeTemplate("Table", "images/table.svg", "forestgreen", "RoundedRectangle",
       [],
       [makePort("OUT", false)]);
@@ -235,50 +198,50 @@ export const DiagramWrapper= function(props:DiagramProps) {
     return diagram;
   }
 
-  
-	const initPalette = () => {
-		const animateFadeDown = (e:any) => {
-			const animation = new go.Animation();
-			animation.isViewportUnconstrained = true;
-			animation.easing = go.Animation.EaseOutExpo;
-			animation.duration = 900;
-			animation.add(
-				e.diagram,
-				'position',
-				e.diagram.position.copy().offset(0, 200),
-				e.diagram.position
-			);
-			animation.add(e.diagram, 'opacity', 0, 1);
-			animation.start();
-		};
 
-		const myPalette = $(go.Palette, {
-			nodeTemplateMap: nodeTemplateMap
-		});
-    
-		return myPalette;
-	};
+  const initPalette = () => {
+    const animateFadeDown = (e) => {
+      const animation = new go.Animation();
+      animation.isViewportUnconstrained = true;
+      animation.easing = go.Animation.EaseOutExpo;
+      animation.duration = 900;
+      animation.add(
+        e.diagram,
+        'position',
+        e.diagram.position.copy().offset(0, 200),
+        e.diagram.position
+      );
+      animation.add(e.diagram, 'opacity', 0, 1);
+      animation.start();
+    };
 
-    return (
-      <div>
-        
-        <textarea  value={temp} />
+    const myPalette = $(go.Palette, {
+      nodeTemplateMap: nodeTemplateMap
+    });
+
+    return myPalette;
+  };
+
+  return (
+    <div>
+
+      <textarea value={temp} />
       <div className="wrapper">
-        
+
         <ReactPalette
-							initPalette={initPalette}
-							divClassName="palette-component"
-							nodeDataArray=//{nodeTemplateMap.iteratorValues}
-              
-              {[
-								{ "category":"Table"},
-								{"category":"Join"},
-                {"category":"Project"},
-                {"category":"Filter"},
-                {"category":"Group"},{"category":"Sort"},{"category":"Export"}
-							]}
-              
-						/>
+          initPalette={initPalette}
+          divClassName="palette-component"
+          nodeDataArray=//{nodeTemplateMap.iteratorValues}
+
+          {[
+            { "category": "Table" },
+            { "category": "Join" },
+            { "category": "Project" },
+            { "category": "Filter" },
+            { "category": "Group" }, { "category": "Sort" }, { "category": "Export" }
+          ]}
+
+        />
         <ReactDiagram
           divClassName='diagram-component'
           initDiagram={initDiagram}
@@ -290,13 +253,8 @@ export const DiagramWrapper= function(props:DiagramProps) {
           skipsDiagramUpdate={props.skipsDiagramUpdate}
         />
 
-        
-      </div>
-      </div>
-    );
-  }
 
-/*
-        <button onClick={save}>Save</button>
-        <button onClick={load}>Load</button>
-        */
+      </div>
+    </div>
+  );
+}

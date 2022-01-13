@@ -5,23 +5,17 @@
 import * as React from 'react';
 import './Inspector.css';
 
-interface InspectorRowProps {
-  id: string;
-  value: string;
-  onInputChange: (key: string, value: string, isBlur: boolean) => void;
-}
-
-export class InspectorRow extends React.PureComponent<InspectorRowProps, {}> {
-  constructor(props: InspectorRowProps) {
+export class InspectorRow extends React.PureComponent{
+  constructor(props) {
     super(props);
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-  private handleInputChange(e: any) {
+   handleInputChange(e) {
     this.props.onInputChange(this.props.id, e.target.value, e.type === 'blur');
   }
 
-  private formatLocation(loc: string): string {
+   formatLocation(loc) {
     const locArr = loc.split(' ');
     if (locArr.length === 2) {
       const x = parseFloat(locArr[0]);
@@ -33,7 +27,7 @@ export class InspectorRow extends React.PureComponent<InspectorRowProps, {}> {
     return loc;
   }
 
-  public render() {
+  render() {
     let val = this.props.value;
     if (this.props.id === 'loc') {
       val = this.formatLocation(this.props.value);

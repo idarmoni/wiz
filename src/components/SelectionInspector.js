@@ -8,16 +8,11 @@ import { InspectorRow } from './InspectorRow';
 
 import './Inspector.css';
 
-interface SelectionInspectorProps {
-  selectedData: any;
-  onInputChange: (id: string, value: string, isBlur: boolean) => void;
-}
-
-export class SelectionInspector extends React.PureComponent<SelectionInspectorProps, {}> {
+export class SelectionInspector extends React.PureComponent {
   /**
    * Render the object data, passing down property keys and values.
    */
-  private renderObjectDetails() {
+  renderObjectDetails() {
     const selObj = this.props.selectedData;
     const dets = [];
     for (const k in selObj) {
@@ -36,7 +31,7 @@ export class SelectionInspector extends React.PureComponent<SelectionInspectorPr
     return dets;
   }
 
-  public render() {
+  render() {
     return (
       <div id='myInspectorDiv' className='inspector'>
         <table>
