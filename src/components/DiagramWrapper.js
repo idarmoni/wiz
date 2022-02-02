@@ -1,8 +1,6 @@
-/*
-*  Copyright (C) 1998-2021 by Northwoods Software Corporation. All Rights Reserved.
-*/
-
 import * as go from 'gojs';
+import React, { useState, useEffect } from 'react';
+
 import { ReactDiagram, ReactPalette } from 'gojs-react';
 
 import { GuidedDraggingTool } from '../GuidedDraggingTool';
@@ -15,7 +13,7 @@ var nodeTemplateMap = new go.Map();
 
 var $ = go.GraphObject.make;
 
-var temp = 'start'
+let recipestr="start"
 
 function makePort(name, leftside) {
   var port = $(go.Shape, "Rectangle",
@@ -103,10 +101,26 @@ function makeTemplate(typename, icon, background, shape, inports, outports) {
 
 export const DiagramWrapper = function (props) {
 
+  
+  //const [recipestr, setRecipestr] = useState("start");
+  //diagram.model.toJson()
+  function save() {
+    //alert(recipestr);
+    
+    
+      // Simple POST request with a JSON body using fetch
+      const requestOptions = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fileName: 'rcp0.json', rcp: recipestr })
+      };
+      fetch('http://localhost:3001/cats/files', requestOptions)
+          .then(response => response.json());
+  
+  
+  }
 
 
-
-  var nodeDataArray = props.model.nodeDataArray
   const diagram =
     $(go.Diagram,
       {
@@ -148,9 +162,16 @@ export const DiagramWrapper = function (props) {
   const initDiagram = () => {
     // set your license key here before creating the diagram: go.Diagram.licenseKey = "...";
 
+/*
+    diagram.addDiagramListener("Modified", function (e) {
 
-    diagram.addDiagramListener("ChangingSelection", function (e) {
-      temp = diagram.model.toJson();
+      recipestr = diagram.model.toJson();
+
+    });*/
+    diagram.addDiagramListener("AnimationFinished", function (e) {
+
+      recipestr = diagram.model.toJson();
+
     });
     makeTemplate("Table", "images/table.svg", "forestgreen", "RoundedRectangle",
       [],
@@ -225,7 +246,8 @@ export const DiagramWrapper = function (props) {
   return (
     <div>
 
-      <textarea value={temp} />
+      <textarea value={recipestr} />
+      <button onClick={save}>save</button>
       <div className="wrapper">
 
         <ReactPalette
