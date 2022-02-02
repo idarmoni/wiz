@@ -29,7 +29,7 @@ function TabPanel(props) {
           setData(response.data)
         })
         .catch(error=>{
-          console.erroe("error fetching data: ",error);
+          console.error("error fetching data: ",error);
         })
         .finally(()=>{
           setLoading(false)
