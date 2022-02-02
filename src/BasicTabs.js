@@ -23,13 +23,13 @@ function TabPanel(props) {
     const [loading, setLoading] = useState(true);
     useEffect(() => {
       const fetchData = async () => {
-        const result = await axios(
+        await axios(
           `http://localhost:3001/cats/files/`+fileName,
         ).then(response=>{
           setData(response.data)
         })
         .catch(error=>{
-          console.erroe("error fetching data: ",error);
+          console.error("error fetching data: ",error);
         })
         .finally(()=>{
           setLoading(false)
@@ -49,7 +49,7 @@ function TabPanel(props) {
         {...other}
 
       >
-      <Canvas recipe = {data} rcpName={'./rcp'+index+'.json'}/>
+      <Canvas recipe = {data} rcpName={fileName}/>
       </div>
     );
   }
