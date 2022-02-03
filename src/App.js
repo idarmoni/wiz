@@ -3,8 +3,14 @@ import React from "react";
 import { SimpleAccordion } from './SimpleAccordion';
 import { BasicTabs } from './BasicTabs';
 import { DirectionStack } from './TopPannel';
+import  Palette  from './Palette';
+
+
+
+
 
 class App extends React.Component {
+
 
   render() {
     return (
@@ -16,6 +22,7 @@ class App extends React.Component {
         <td style={{ width: 2000 }}>
           <BasicTabs />
         </td>
+
       </div>
 
     )
