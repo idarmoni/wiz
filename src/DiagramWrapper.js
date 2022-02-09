@@ -1,39 +1,34 @@
 import * as go from 'gojs';
-
+import { savercp  } from './utils';
 import { ReactDiagram } from 'gojs-react';
 
-import { GuidedDraggingTool } from '../GuidedDraggingTool';
-import {nodeTemplateMap} from '../Palette'
+import { GuidedDraggingTool } from './GuidedDraggingTool';
+import { nodeTemplateMap } from './Palette'
 
-import './Diagram.css';
 
-var fs = require('browserify-fs');
 
-//var nodeTemplateMap = new go.Map();
 
 var $ = go.GraphObject.make;
 
-let recipestr=""
+let recipeMap = {}
 
 
 export const DiagramWrapper = function (props) {
 
-  //const [recipestr, setRecipestr] = useState("start");
-  //diagram.model.toJson()
-  function save() {
-    
-      //alert('saving the file');
-    
-      // Simple POST request with a JSON body using fetch
-      const requestOptions = {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ fileName: props.rcpName, rcp: recipestr })
-      };
-      fetch('http://localhost:3001/cats/files', requestOptions)
-          .then(response => response.json());
-  }
 
+
+function save()
+{
+  savercp(props.rcpName,recipeMap[props.rcpName])
+}
+
+function saveall()
+{
+  for(const rcpName in recipeMap)
+  {
+    savercp(rcpName,recipeMap[rcpName])
+  }
+}
 
   const diagram =
     $(go.Diagram,
@@ -76,10 +71,11 @@ export const DiagramWrapper = function (props) {
   const initDiagram = () => {
     // set your license key here before creating the diagram: go.Diagram.licenseKey = "...";
 
-    diagram.addModelChangedListener(function(evt) {
-      if (evt.isTransactionFinished){
+    diagram.addModelChangedListener(function (evt) {
+      if (evt.isTransactionFinished) {
 
-        recipestr = diagram.model.toJson();
+        var recipestr = diagram.model.toJson();
+        recipeMap[props.rcpName] = recipestr
       }
     });
 
@@ -101,10 +97,12 @@ export const DiagramWrapper = function (props) {
     return diagram;
   }
 
+  //props.buttonHandler.saveHandler(save)
+
   return (
     <div>
-
       <button onClick={save}>save</button>
+      <button onClick={saveall}>saveall</button>
       <div className="wrapper">
         <ReactDiagram
           divClassName='diagram-component'

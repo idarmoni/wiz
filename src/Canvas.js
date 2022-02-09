@@ -1,10 +1,7 @@
 import * as go from 'gojs';
 import { produce } from 'immer';
 import * as React from 'react';
-
-//import { DiagramWrapper } from './components/DiagramWrapper';
-import { DiagramWrapper } from './components/DiagramWrapper';
-import { SelectionInspector } from './components/SelectionInspector';
+import { DiagramWrapper } from './DiagramWrapper';
 
 import './App.css';
 //import internal from 'stream';
@@ -211,13 +208,6 @@ class Canvas extends React.Component {
 
   render() {
     const selectedData = this.state.selectedData;
-    let inspector;
-    if (selectedData !== null) {
-      inspector = <SelectionInspector
-                    selectedData={this.state.selectedData}
-                    onInputChange={this.handleInputChange}
-                  />;
-    }
     var diagramprops ={rcpName: this.props.rcpName,
     model : this.state.model,
     skipsDiagramUpdate: this.state.skipsDiagramUpdate,
@@ -226,7 +216,6 @@ class Canvas extends React.Component {
     return (
         DiagramWrapper(diagramprops))
             
-        //{inspector}
         
   }
 }
