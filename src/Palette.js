@@ -61,8 +61,8 @@ function makeTemplate(typename, icon, background, shape, inports, outports) {
             stroke: "white",
             font: "bold 11pt sans-serif"
           }),
-        $(go.Picture, icon,
-          { row: 1, width: 16, height: 16, scale: 3.0 }),
+        $(go.Picture,
+          {source: "rose.jpeg", background: "gray", width: 16, height: 16, row: 1, scale: 3.0}),
         $(go.TextBlock,
           {
             row: 2,
@@ -95,9 +95,7 @@ function makeTemplate(typename, icon, background, shape, inports, outports) {
 export const Palette = function (props) {
   function initPalette(){
 
-
-
-    makeTemplate("Table", "images/table.svg", "aquamarine", "RoundedRectangle",
+    makeTemplate("Table", "src/img/plusIcon.png", "aquamarine", "RoundedRectangle",
       [],
       [makePort("OUT", false)]);
 
@@ -165,8 +163,7 @@ export const Palette = function (props) {
         />
       </div>
 
-    )
-  
+    )  
 }
 
 export default Palette
