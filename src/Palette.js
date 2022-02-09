@@ -1,59 +1,66 @@
-import React from "react";
+
 import * as go from 'gojs';
 import { ReactPalette } from 'gojs-react';
 
-
-
 export var nodeTemplateMap = new go.Map();
+export var paletteNodeTemplateMap = new go.Map();
+
 var $ = go.GraphObject.make;
 
 
-function makePort(name, leftside) {
-  var port = $(go.Shape, "Rectangle",
-    {
-      fill: "gray", stroke: null,
-      desiredSize: new go.Size(8, 8),
-      portId: name,  // declare this object to be a "port"
-      toMaxLinks: 1,  // don't allow more than one link into a port
-      cursor: "pointer"  // show a different cursor to indicate potential link point
-    });
+function makePorts(portsNames,leftside) {
+  var panels = []
+  for (const portindex in portsNames) {
+    var portname = portsNames[portindex]
+    var port = $(go.Shape, "Rectangle",
+      {
+        fill: "gray", stroke: null,
+        desiredSize: new go.Size(8, 8),
+        portId: portname,  // declare this object to be a "port"
+        toMaxLinks: 1,  // don't allow more than one link into a port
+        cursor: "pointer"  // show a different cursor to indicate potential link point
+      });
 
-  var lab = $(go.TextBlock, name,  // the name of the port
-    { font: "7pt sans-serif" });
+    var lab = $(go.TextBlock, portname,  // the name of the port
+      { font: "7pt sans-serif" });
 
-  var panel = $(go.Panel, "Horizontal",
-    { margin: new go.Margin(2, 0) });
+    var panel = $(go.Panel, "Horizontal",
+      { margin: new go.Margin(2, 0) });
 
-  // set up the port/panel based on which side of the node it will be on
-  if (leftside) {
-    port.toSpot = go.Spot.Left;
-    port.toLinkable = true;
-    lab.margin = new go.Margin(1, 0, 0, 1);
-    panel.alignment = go.Spot.TopLeft;
-    panel.add(port);
-    panel.add(lab);
-  } else {
-    port.fromSpot = go.Spot.Right;
-    port.fromLinkable = true;
-    lab.margin = new go.Margin(1, 1, 0, 0);
-    panel.alignment = go.Spot.TopRight;
-    panel.add(lab);
-    panel.add(port);
+    // set up the port/panel based on which side of the node it will be on
+    if (leftside) {
+      port.toSpot = go.Spot.Left;
+      port.toLinkable = true;
+      lab.margin = new go.Margin(1, 0, 0, 1);
+      panel.alignment = go.Spot.TopLeft;
+      panel.add(port);
+      panel.add(lab);
+    } else {
+      port.fromSpot = go.Spot.Right;
+      port.fromLinkable = true;
+      lab.margin = new go.Margin(1, 1, 0, 0);
+      panel.alignment = go.Spot.TopRight;
+      panel.add(lab);
+      panel.add(port);
+    }
+    panels.push(panel)
   }
-  return panel;
+  return panels;
 }
 
-function makeTemplate(typename, icon, background, shape, inports, outports) {
+function makeTemplate(templatejson) {
+  var inports = makePorts(templatejson.inports,true)
+  var outports = makePorts(templatejson.outports,false)
   var node = $(go.Node, "Spot",
     $(go.Panel, "Auto",
       { width: 100, height: 120 },
-      $(go.Shape, shape,
+      $(go.Shape, templatejson.shape,
         {
-          fill: background, stroke: null, strokeWidth: 0,
+          fill: templatejson.color, stroke: null, strokeWidth: 0,
           spot1: go.Spot.TopLeft, spot2: go.Spot.BottomRight
         }),
       $(go.Panel, "Table",
-        $(go.TextBlock, typename,
+        $(go.TextBlock, templatejson.name,
           {
             row: 0,
             margin: 3,
@@ -61,8 +68,13 @@ function makeTemplate(typename, icon, background, shape, inports, outports) {
             stroke: "white",
             font: "bold 11pt sans-serif"
           }),
+<<<<<<< HEAD
         $(go.Picture,
           {source: "rose.jpeg", background: "gray", width: 16, height: 16, row: 1, scale: 3.0}),
+=======
+        $(go.Picture, "http://localhost:3001/" + templatejson.icon,
+          { row: 1, width: 16, height: 16, scale: 3.0 }),
+>>>>>>> 62b9fe6824b4cd67b2f235a3e74d0ca807452c17
         $(go.TextBlock,
           {
             row: 2,
@@ -89,9 +101,10 @@ function makeTemplate(typename, icon, background, shape, inports, outports) {
       },
       outports)
   );
-  nodeTemplateMap.add(typename, node);
+  nodeTemplateMap.add(templatejson.name, node);
 }
 
+<<<<<<< HEAD
 export const Palette = function (props) {
   function initPalette(){
 
@@ -126,11 +139,30 @@ export const Palette = function (props) {
     makeTemplate("Export", "images/upload.svg", "darkred", "Ellipse",
       [makePort("", true)],
       []);
+=======
+function setPalleteTemplates(templatejson)
+{
+  var node =$(go.Node, "Horizontal",
+    $(go.Picture,"http://localhost:3001/" + templatejson.icon,
+      { width: 20, height: 20 }),
+    $(go.TextBlock, { name: "TB" ,text:templatejson.name})
+  );
+  paletteNodeTemplateMap.add(templatejson.name, node);
+}
+>>>>>>> 62b9fe6824b4cd67b2f235a3e74d0ca807452c17
 
-      makeTemplate("2inputfunc", "images/upload.svg", "deepskyblue", "RoundedRectangle",
-      [makePort("A", true),makePort("B", true)],
-      [makePort("OUT", false)]);
+export const Palette = function (props) {
+  function initPalette() {
+  var temp = require('./templates.json')
+  
+  for (const templateindex in temp.Templates)
+  {
+    makeTemplate(temp.Templates[templateindex])
+    setPalleteTemplates(temp.Templates[templateindex])
+  }
+    
 
+  
     const animateFadeDown = (e) => {
       const animation = new go.Animation();
       animation.isViewportUnconstrained = true;
@@ -146,24 +178,30 @@ export const Palette = function (props) {
       animation.start();
     };
 
+    
     const myPalette = $(go.Palette, {
-      nodeTemplateMap: nodeTemplateMap
+      nodeTemplateMap: paletteNodeTemplateMap
     });
 
     return myPalette;
   };
 
-    return (
-      <div>
-        <ReactPalette
-          initPalette = {initPalette}
-          divClassName = "palette-component"
-          nodeDataArray = {props.nodeArray}
+  return (
+    <div>
+      <ReactPalette
+        initPalette={initPalette}
+        divClassName="palette-component"
+        nodeDataArray={props.nodeArray}
 
-        />
-      </div>
+      />
+    </div>
 
+  )
+
+<<<<<<< HEAD
     )  
+=======
+>>>>>>> 62b9fe6824b4cd67b2f235a3e74d0ca807452c17
 }
 
 export default Palette

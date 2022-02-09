@@ -1,0 +1,102 @@
+{
+    "Templates": [{
+      "name": "Table", "icon": "table.svg", "color": "aquamarine", "shape": "RoundedRectangle",
+      "inports": [],
+      "outports": ["OUT"]
+    },
+  {
+    "name": "Input", "icon": "input.png", "color": "forestgreen", "shape": "RoundedRectangle",
+      "inports": [],
+      "outports": ["OUT"]
+  },
+  {
+    "name": "Join", "icon": "join.svg", "color": "mediumorchid", "shape": "Ellipse",
+      "inports": ["L","R"],
+      "outports": ["UL","ML","M","MR","UR"]
+  },
+  {
+    "name": "Project", "icon": "project.svg", "color": "darkcyan", "shape": "Diamond",
+      "inports": [""],
+      "outports": ["OUT"]
+  },
+  {
+    "name": "Filter", "icon": "filter.svg", "color": "cornflowerblue", "shape": "RoundedRectangle",
+      "inports": [""],
+      "outports": ["OUT","INV"]
+  },
+  {
+    "name": "Group", "icon": "group.svg", "color": "mediumpurple", "shape": "Diamond",
+      "inports": [""],
+      "outports": ["OUT"]
+  },
+  {
+    "name": "Sort", "icon": "sort.svg", "color": "sienna", "shape": "RoundedRectangle",
+      "inports": [""],
+      "outports": ["OUT"]
+  },
+  {
+    "name": "Output", "icon": "upload.svg", "color": "darkred", "shape": "Ellipse",
+      "inports": [""],
+      "outports": []
+  },
+  {
+    "name": "Add", "icon": "plus.png", "color": "deepskyblue", "shape": "RoundedRectangle",
+      "inports": ["X","Y"],
+      "outports": ["Sum"]
+  },
+  {
+    "name": "Substract", "icon": "minus.png", "color": "deepskyblue", "shape": "RoundedRectangle",
+    "inports": ["X","Y"],
+      "outports": ["diff"]
+  },
+  {
+    "name": "Mult", "icon": "mult.png", "color": "deepskyblue", "shape": "RoundedRectangle",
+    "inports": ["X","Y"],
+      "outports": ["mult"]
+  },
+  {
+    "name": "Division", "icon": "division.png", "color": "deepskyblue", "shape": "RoundedRectangle",
+    "inports": ["X","Y"],
+      "outports": ["div"]
+  },
+  {
+    "name": "Cos", "icon": "cos.png", "color": "deepskyblue", "shape": "RoundedRectangle",
+    "inports": ["X"],
+      "outports": ["OUT"]
+  },
+  {
+    "name": "Sin", "icon": "sin.png", "color": "deepskyblue", "shape": "RoundedRectangle",
+    "inports": ["X"],
+      "outports": ["OUT"]
+  },
+  {
+    "name": "Tan", "icon": "tan.png", "color": "deepskyblue", "shape": "RoundedRectangle",
+    "inports": ["X"],
+      "outports": ["OUT"]
+  },
+  {
+    "name": "Square", "icon": "squareroot.png", "color": "deepskyblue", "shape": "RoundedRectangle",
+    "inports": ["X"],
+      "outports": ["OUT"]
+  },
+  {
+    "name": "Exponent", "icon": "exponent.png", "color": "deepskyblue", "shape": "RoundedRectangle",
+    "inports": ["X","Y"],
+      "outports": ["OUT"]
+  },
+  {
+    "name": "Radian2Degree", "icon": "radian2Degree.png", "color": "deepskyblue", "shape": "RoundedRectangle",
+    "inports": ["Radian"],
+      "outports": ["Degree"]
+  },
+  {
+    "name": "Degree2Radian", "icon": "degree2Radian.png", "color": "deepskyblue", "shape": "RoundedRectangle",
+    "inports": ["Degree"],
+      "outports": ["Radian"]
+  },
+  {
+    "name": "Avarage", "icon": "avarage.png", "color": "deepskyblue", "shape": "RoundedRectangle",
+    "inports": ["A","B","C","D","E"],
+      "outports": ["avg"]
+  }
+]}

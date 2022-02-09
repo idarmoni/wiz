@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-//import Typography from '@mui/material/Typography';
 
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
@@ -9,7 +8,6 @@ import Box from '@mui/material/Box';
 import Canvas from './Canvas'
 import axios from 'axios';
 
-const fs = require("fs")
 
 
 function TabPanel(props) {
@@ -24,7 +22,7 @@ function TabPanel(props) {
     useEffect(() => {
       const fetchData = async () => {
         await axios(
-          `http://localhost:3001/cats/files/`+fileName,
+          `http://localhost:3001/files/`+fileName,
         ).then(response=>{
           setData(response.data)
         })
@@ -67,7 +65,7 @@ function TabPanel(props) {
     };
   }
   
-  export const BasicTabs = function () {
+  export const BasicTabs = function (props) {
     const [value, setValue] = React.useState(0);
   
     const handleChange = (event, newValue) => {
@@ -84,9 +82,9 @@ function TabPanel(props) {
             <Tab label="Item Three" {...a11yProps(2)} />
           </Tabs>
         </Box>
-        <TabPanel value={value} onChange={handleChange} index={0}/>    
-        <TabPanel value={value} onChange={handleChange} index={1}/>
-        <TabPanel value={value} onChange={handleChange} index={2}/>
+        <TabPanel value={value} onChange={handleChange} index={0} />    
+        <TabPanel value={value} onChange={handleChange} index={1} />
+        <TabPanel value={value} onChange={handleChange} index={2} />
       </Box>
     );
   }

@@ -4,23 +4,9 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Grid from '@mui/material/Grid';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import AddIcon from '@mui/icons-material/Add';
-import IconButton from '@mui/material/IconButton';
-import plus from './img/plusIcon.png'
-import minus from './img/minusIcon.png'
-import division from './img/divisionIcon.png'
-import multiplication from './img/multiplicationIcon.png'
-import sum from './img/sumIcon.png'
-import squareroot from './img/squarerootIcon.png'
 import Palette from './Palette';
 
 
-function handleClick() {
-  //לבצע אירוע כאשר לוחצים על הכפתור
-
-}
 
 export const SimpleAccordion = function () {
   return (
@@ -40,9 +26,8 @@ export const SimpleAccordion = function () {
               nodeArray={[
                 { "category": "Input" }, { "category": "Table" },
                 { "category": "Join" }, { "category": "Project" },
-                { "category": "2inputfunc" }, { "category": "Filter" },
-                { "category": "Group" }, { "category": "Sort" },
-                { "category": "Export" }
+                { "category": "Filter" }, { "category": "Group" },
+                { "category": "Sort" }, { "category": "Output" }
               ]} />
           </Typography>
         </AccordionDetails>
@@ -82,10 +67,13 @@ export const SimpleAccordion = function () {
         <AccordionDetails>
             <Palette
               nodeArray={[
-                { "category": "2inputfunc", "name": "plus" },
-                { "category": "2inputfunc", "name": "minus" },
-                { "category": "2inputfunc", "name": "multiply" },
-                { "category": "2inputfunc", "name": "divide" },
+                { "category": "Add"}, { "category": "Substract" },
+                { "category": "Mult"}, { "category": "Division"},
+                { "category": "Cos"}, { "category": "Sin"},
+                { "category": "Tan"}, { "category": "Square"},
+                { "category": "Exponent"}, { "category": "Radian2Degree"},
+                { "category": "Degree2Radian"}, { "category": "Avarage"},
+
               ]} />
 
         </AccordionDetails>

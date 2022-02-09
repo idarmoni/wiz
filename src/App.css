@@ -29,8 +29,8 @@
 }
 
 .diagram-component {
-  width: 1900px;
-  height: 890px;
+  width: 1700px;
+  height: 790px;
   border: solid 1px black;
   background-color: white;
 }
@@ -57,8 +57,7 @@
 .palette-component {
 	box-sizing: border-box;
 	background-color: white;
-	border-right: solid 1px black;
-	height: 700px;
+	height: 200px;
 }
 
 
