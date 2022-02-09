@@ -68,13 +68,9 @@ function makeTemplate(templatejson) {
             stroke: "white",
             font: "bold 11pt sans-serif"
           }),
-<<<<<<< HEAD
-        $(go.Picture,
-          {source: "rose.jpeg", background: "gray", width: 16, height: 16, row: 1, scale: 3.0}),
-=======
+
         $(go.Picture, "http://localhost:3001/" + templatejson.icon,
           { row: 1, width: 16, height: 16, scale: 3.0 }),
->>>>>>> 62b9fe6824b4cd67b2f235a3e74d0ca807452c17
         $(go.TextBlock,
           {
             row: 2,
@@ -104,42 +100,6 @@ function makeTemplate(templatejson) {
   nodeTemplateMap.add(templatejson.name, node);
 }
 
-<<<<<<< HEAD
-export const Palette = function (props) {
-  function initPalette(){
-
-    makeTemplate("Table", "src/img/plusIcon.png", "aquamarine", "RoundedRectangle",
-      [],
-      [makePort("OUT", false)]);
-
-      makeTemplate("Input", "images/table.svg", "forestgreen", "RoundedRectangle",
-      [],
-      [makePort("OUT", false)]);
-
-    makeTemplate("Join", "join.svg", "mediumorchid", "Ellipse",
-      [makePort("L", true), makePort("R", true)],
-      [makePort("UL", false), makePort("ML", false), makePort("M", false), makePort("MR", false), makePort("UR", false)]);
-
-    makeTemplate("Project", "images/project.svg", "darkcyan", "Diamond",
-      [makePort("", true)],
-      [makePort("OUT", false)]);
-
-    makeTemplate("Filter", "images/filter.svg", "cornflowerblue", "RoundedRectangle",
-      [makePort("", true)],
-      [makePort("OUT", false), makePort("INV", false)]);
-
-    makeTemplate("Group", "images/group.svg", "mediumpurple", "Diamond",
-      [makePort("", true)],
-      [makePort("OUT", false)]);
-
-    makeTemplate("Sort", "images/sort.svg", "sienna", "RoundedRectangle",
-      [makePort("", true)],
-      [makePort("OUT", false)]);
-
-    makeTemplate("Export", "images/upload.svg", "darkred", "Ellipse",
-      [makePort("", true)],
-      []);
-=======
 function setPalleteTemplates(templatejson)
 {
   var node =$(go.Node, "Horizontal",
@@ -149,7 +109,6 @@ function setPalleteTemplates(templatejson)
   );
   paletteNodeTemplateMap.add(templatejson.name, node);
 }
->>>>>>> 62b9fe6824b4cd67b2f235a3e74d0ca807452c17
 
 export const Palette = function (props) {
   function initPalette() {
@@ -198,10 +157,7 @@ export const Palette = function (props) {
 
   )
 
-<<<<<<< HEAD
-    )  
-=======
->>>>>>> 62b9fe6824b4cd67b2f235a3e74d0ca807452c17
+  
 }
 
 export default Palette
