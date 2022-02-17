@@ -7,85 +7,116 @@ import Box from '@mui/material/Box';
 
 import Canvas from './Canvas'
 import axios from 'axios';
+import { store } from './store';
 
+import { PostAdd } from "@material-ui/icons";
 
+export function TabPanel(props) {
+  const { children, index,currentTablIndex, ...other } = props;
 
-function TabPanel(props) {
-    const { children, value, index, ...other } = props;
-    
-  
-    const fileName = 'rcp'+index+'.json'
+  const fileName = 'rcp' + index + '.json'
 
-    
-    const [data, setData] = useState("");
-    const [loading, setLoading] = useState(true);
-    useEffect(() => {
-      const fetchData = async () => {
-        await axios(
-          `http://localhost:3001/files/`+fileName,
-        ).then(response=>{
-          setData(response.data)
+  const [data, setData] = useState("");
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios(
+        `http://localhost:3001/files/` + fileName,
+      ).then(response => {
+        setData(response.data)
+      })
+        .catch(error => {
+          console.error("error fetching data: ", error);
         })
-        .catch(error=>{
-          console.error("error fetching data: ",error);
-        })
-        .finally(()=>{
+        .finally(() => {
           setLoading(false)
         })
-      };
-  
-      fetchData();
-    }, []);
-    if(loading) return "loading..."
-    
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
+    };
 
-      >
-      <Canvas recipe = {data} rcpName={fileName}/>
-      </div>
-    );
-  }
+    fetchData();
+  }, []);
+  if (loading) return "loading..."
+  return (
+    <div
+      role="tabpanel"
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+
+    >
+      <Canvas recipe={data} rcpName={fileName} index={index} />
+    </div>
+  );
+}
+
+let maxTabIndex = 0;
+
+export const BasicTabs = function (props) {
+
+  const [currentTablIndex, setCurrentTablIndex] = useState(0);
   
+
   TabPanel.propTypes = {
     children: PropTypes.node,
     index: PropTypes.number.isRequired,
-    value: PropTypes.number.isRequired,
   };
-  
+
   function a11yProps(index) {
     return {
       id: `simple-tab-${index}`,
       'aria-controls': `simple-tabpanel-${index}`,
     };
   }
-  
-  export const BasicTabs = function (props) {
-    const [value, setValue] = React.useState(0);
-  
-    const handleChange = (event, newValue) => {
-      setValue(newValue);
-    };
-  
-        //TODO:: recipeName in prop
-    return (
-      <Box sx={{ width: '100%' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-            <Tab label="Item One" {...a11yProps(0)} />
-            <Tab label="Item Two" {...a11yProps(1)} />
-            <Tab label="Item Three" {...a11yProps(2)} />
-          </Tabs>
-        </Box>
-        <TabPanel value={value} onChange={handleChange} index={0} />    
-        <TabPanel value={value} onChange={handleChange} index={1} />
-        <TabPanel value={value} onChange={handleChange} index={2} />
+
+  const handleChange = (event, newValue) => {
+    if (newValue === "tabProperties") {
+      handleAddTab();
+    }
+    else {
+      store.dispatch({
+        type: 'change tab',
+        index: newValue
+      })
+      setCurrentTablIndex(newValue);
+    }
+  };
+
+
+  const handleAddTab = () => {
+    maxTabIndex = maxTabIndex + 1;
+    setAddTab([
+      ...tabs,
+      <Tab label={`Item ${maxTabIndex}`} {...a11yProps(maxTabIndex)} />
+    ]);
+    handleTabsContent();
+  };
+
+
+  // Handle Add Tab Content
+  const [tabsContent, setTabsContent] = useState([
+    <TabPanel  index={maxTabIndex} />
+  ]);
+  const handleTabsContent = () => {
+    setTabsContent([
+      ...tabsContent,
+      <TabPanel  index={maxTabIndex} />
+
+
+    ]);
+  };
+
+  const [tabs, setAddTab] = useState([<Tab label="Item 0" {...a11yProps(0)} />]);
+
+  return (
+    <Box sx={{ width: '100%' }}>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Tabs value={currentTablIndex} onChange={handleChange} aria-label="basic tabs example">
+
+          {tabs.map(child => child)}
+          <Tab icon={<PostAdd />} value="tabProperties" />
+        </Tabs>
       </Box>
-    );
-  }
-  
+      {tabsContent.map(child => child)}
+    </Box>
+  );
+}

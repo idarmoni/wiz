@@ -17,13 +17,13 @@ class Canvas extends React.Component {
   constructor(props) {
     super(props);
 
-  
-    this.state = { 
+
+    this.state = {
       nodeCategoryProperty: "type",
       selectedData: null,
       skipsDiagramUpdate: false,
-      model:this.props.recipe
-  };
+      model: this.props.recipe
+    };
     // init maps
     this.mapNodeKeyIdx = new Map();
     this.mapLinkKeyIdx = new Map();
@@ -77,7 +77,7 @@ class Canvas extends React.Component {
    * This method iterates over those changes and updates state to keep in sync with the GoJS model.
    * @param obj a JSON-formatted string
    */
-   handleModelChange(obj) {
+  handleModelChange(obj) {
     const insertedNodeKeys = obj.insertedNodeKeys;
     const modifiedNodeData = obj.modifiedNodeData;
     const removedNodeKeys = obj.removedNodeKeys;
@@ -208,15 +208,18 @@ class Canvas extends React.Component {
 
   render() {
     const selectedData = this.state.selectedData;
-    var diagramprops ={rcpName: this.props.rcpName,
-    model : this.state.model,
-    skipsDiagramUpdate: this.state.skipsDiagramUpdate,
-    onDiagramEvent: this.handleDiagramEvent,
-    onModelChange:this.handleModelChange }
+    var diagramprops = {
+      rcpName: this.props.rcpName,
+      index: this.props.index,
+      model: this.state.model,
+      skipsDiagramUpdate: this.state.skipsDiagramUpdate,
+      onDiagramEvent: this.handleDiagramEvent,
+      onModelChange: this.handleModelChange
+    }
     return (
-        DiagramWrapper(diagramprops))
-            
-        
+      DiagramWrapper(diagramprops))
+
+
   }
 }
 

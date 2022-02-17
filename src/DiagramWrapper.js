@@ -1,6 +1,7 @@
 import * as go from 'gojs';
-import { savercp  } from './utils';
+import { save,saveall,savercp} from './utils';
 import { ReactDiagram } from 'gojs-react';
+import {store} from './store'
 
 import { GuidedDraggingTool } from './GuidedDraggingTool';
 import { nodeTemplateMap } from './Palette'
@@ -10,25 +11,14 @@ import { nodeTemplateMap } from './Palette'
 
 var $ = go.GraphObject.make;
 
-let recipeMap = {}
 
 
 export const DiagramWrapper = function (props) {
 
 
 
-function save()
-{
-  savercp(props.rcpName,recipeMap[props.rcpName])
-}
 
-function saveall()
-{
-  for(const rcpName in recipeMap)
-  {
-    savercp(rcpName,recipeMap[rcpName])
-  }
-}
+
 
   const diagram =
     $(go.Diagram,
@@ -73,9 +63,11 @@ function saveall()
 
     diagram.addModelChangedListener(function (evt) {
       if (evt.isTransactionFinished) {
-
-        var recipestr = diagram.model.toJson();
-        recipeMap[props.rcpName] = recipestr
+        store.dispatch({
+          type:'change recipe',
+          rcpName:props.rcpName,
+          rcp:diagram.model.toJson(),
+          index:props.index})
       }
     });
 
@@ -97,12 +89,9 @@ function saveall()
     return diagram;
   }
 
-  //props.buttonHandler.saveHandler(save)
 
   return (
     <div>
-      <button onClick={save}>save</button>
-      <button onClick={saveall}>saveall</button>
       <div className="wrapper">
         <ReactDiagram
           divClassName='diagram-component'
