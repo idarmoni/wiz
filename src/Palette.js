@@ -68,6 +68,7 @@ function makeTemplate(templatejson) {
             stroke: "white",
             font: "bold 11pt sans-serif"
           }),
+
         $(go.Picture, "http://localhost:3001/" + templatejson.icon,
           { row: 1, width: 16, height: 16, scale: 3.0 }),
         $(go.TextBlock,
@@ -156,6 +157,7 @@ export const Palette = function (props) {
 
   )
 
+  
 }
 
 export default Palette
