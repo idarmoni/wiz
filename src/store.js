@@ -18,6 +18,8 @@ function counterReducer(state = initialState, action) {
           {rcp:temp,rcpName:action.rcpid }}
         case 'change tab':
             return{...state,currentIndex : action.index}
+        case 'create instance':
+          return{...state,instance : action.instance}
 
 
       default:

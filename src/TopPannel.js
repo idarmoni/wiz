@@ -22,7 +22,7 @@ export class DirectionStack extends React.Component {
         <Stack direction="row" spacing={2}>
 
           <Button><FolderOpenIcon /> </Button>
-          <Button><FileOpenIcon /></Button>
+          <Button onClick={utils.addNewTab} ><FileOpenIcon /></Button>
           <Button onClick={utils.saveall}><SaveAltIcon/></Button>
           <Button onClick={utils.save}><SaveIcon/></Button>
           <Button><PlayCircleIcon /></Button>

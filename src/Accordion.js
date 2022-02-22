@@ -1,4 +1,3 @@
-
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -6,23 +5,23 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Palette from './Palette';
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { addTab } from './utils';
+
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+
+import Box from '@mui/material/Box';
 
 
 
-export const SimpleAccordion = function () {
+export const SidePannel = function () {
   
   const [data, setData] = useState("loading...");
-  const [loading, setLoading] = useState(true);
    var recipes = []
-    // console.log(data)
-    // console.log(loading)
     for (var i in data) {
-
-      // console.log(data[i])
-      // console.log(i)
-      recipes.push(<button onClick={()=>alert('open '+ data[i].recipeName)}>{data[i].recipeName}</button>)
-
+      const index = i
+      recipes.push(<Button onClick={()=>addTab(data[index].id,data[index].recipeName)}>{data[i].recipeName}</Button>)
     }
   
     useEffect(() => {
@@ -35,13 +34,8 @@ export const SimpleAccordion = function () {
           .catch(error => {
             console.error("error fetching data: ", error);
           })
-          .finally(() => {
-            setLoading(false)
-          })
       };
-  
       fetchData();
-      // alert(data)
     }, []);
 
   return (
@@ -56,7 +50,25 @@ export const SimpleAccordion = function () {
           <Typography>recipes</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          {recipes}
+        <Box
+      sx={{
+        display: 'flex',
+        '& > *': {
+          width:150,
+        },
+      }}
+    >
+      <ButtonGroup
+      
+        orientation="vertical"
+        aria-label="vertical outlined button group"
+      >
+        {recipes}
+      </ButtonGroup>
+      
+      
+    </Box>
+          
         </AccordionDetails>
       </Accordion>
 
