@@ -15,11 +15,6 @@ var $ = go.GraphObject.make;
 
 export const DiagramWrapper = function (props) {
 
-
-
-
-
-
   const diagram =
     $(go.Diagram,
       {
@@ -65,7 +60,8 @@ export const DiagramWrapper = function (props) {
       if (evt.isTransactionFinished) {
         store.dispatch({
           type:'change recipe',
-          rcpName:props.rcpName,
+          rcpName:props.model.recipeName,
+          rcpid: props.rcpName,
           rcp:diagram.model.toJson(),
           index:props.index})
       }

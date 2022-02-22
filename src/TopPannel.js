@@ -8,7 +8,7 @@ import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import FileOpenIcon from '@mui/icons-material/FileOpen';
 import React from 'react';
-import { saveall,save} from './utils';
+import * as utils from './utils';
 
 
 
@@ -23,8 +23,8 @@ export class DirectionStack extends React.Component {
 
           <Button><FolderOpenIcon /> </Button>
           <Button><FileOpenIcon /></Button>
-          <Button onClick={saveall}><SaveAltIcon/></Button>
-          <Button onClick={save}><SaveIcon/></Button>
+          <Button onClick={utils.saveall}><SaveAltIcon/></Button>
+          <Button onClick={utils.save}><SaveIcon/></Button>
           <Button><PlayCircleIcon /></Button>
 
         </Stack>

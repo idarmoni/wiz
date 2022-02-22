@@ -26,7 +26,7 @@ export default function Tabb()
     ],
     selectedTabID: 0,
     onSelect: function ({currentSelectedTabId, previousSelectedTabId}) {
-      console.log('[onSelect]');
+      console.log('Select the tab '+ currentSelectedTabId);
       store.dispatch({
         type: 'change tab',
         index: currentSelectedTabId
@@ -38,24 +38,27 @@ export default function Tabb()
   ready((instance) => {
     _instance = instance;
   });
-  const addTab = function () {
+  const addnewTab = function () {
     maxtabid+=1
+    addTab(maxtabid)
+  };
+
+  const addTab = function (tabid) {
     // open tab
-    _instance.open({id: maxtabid, title: 'Tab '+maxtabid, panelComponent: (props) => <TabPanel  index={maxtabid} />}).then(() => {
-      console.log('tab '+maxtabid+' is open');
+    _instance.open({id: tabid, title: 'Tab '+tabid, panelComponent: (props) => <TabPanel  index={tabid} />}).then(() => {
+      console.log('tab '+tabid+' is open');
     });
     // switch to tab
-    _instance.select(maxtabid).then(() => {
-      console.log('tab '+maxtabid+' is selected');
+    _instance.select(tabid).then(() => {
+      console.log('tab '+tabid+' is selected');
     });
   };
+
   
   return (
     <>
-    
       <TabList/>
-      
-        <button onClick={addTab} >Add tab</button>
+        <button onClick={addnewTab} >Add new tab</button>
       <PanelList/>
     </>
   );

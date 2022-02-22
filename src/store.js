@@ -12,7 +12,10 @@ function counterReducer(state = initialState, action) {
     // to decide how to update the state
     switch (action.type) {
       case 'change recipe':
-        return { ...state, value: state.recipeMap[action.index] = {rcp:action.rcp,rcpName:action.rcpName }}
+      var temp = JSON.parse(action.rcp)
+      temp = { recipeName:action.rcpName, nodeDataArray: temp.nodeDataArray , linkDataArray:temp.linkDataArray}
+        return { ...state, value: state.recipeMap[action.index] = 
+          {rcp:temp,rcpName:action.rcpid }}
         case 'change tab':
             return{...state,currentIndex : action.index}
 
