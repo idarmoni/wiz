@@ -1,6 +1,7 @@
 import { store } from "./store";
 import { TabPanel } from "./TabsManager";
 import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
 
 
   export function savercp(rcpid,rcp) {
@@ -57,3 +58,14 @@ export const addTab = function (tabid,fileName) {
     console.log('tab '+tabid+' is selected');
   });
 };
+
+export function serverTest(){
+  axios(
+    `http://localhost:3001/test/abe569df-f696-4956-8200-4313b0675e5b`,
+  ).then(response => {
+    //setData(response.data)
+  })
+    .catch(error => {
+      console.error("error fetching data: ", error);
+    })
+}

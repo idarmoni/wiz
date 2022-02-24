@@ -80,8 +80,17 @@ function makeTemplate(templatejson) {
             stroke: "white",
             font: "bold 9pt sans-serif"
           },
-          //new go.Binding("text", "name").makeTwoWay())
-          new go.Binding("text", "name").makeTwoWay())
+          new go.Binding("text", "name").makeTwoWay()),
+          $(go.TextBlock,
+            {
+              row: 3,
+              margin: 3,
+              editable: true,
+              maxSize: new go.Size(80, 40),
+              stroke: "white",
+              font: "bold 9pt sans-serif"
+            },
+            new go.Binding("text", "key").makeTwoWay())
       )
     ),
     $(go.Panel, "Vertical",

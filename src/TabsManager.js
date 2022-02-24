@@ -7,7 +7,8 @@ import 'react-dyn-tabs/style/react-dyn-tabs.css';
 import 'react-dyn-tabs/themes/react-dyn-tabs-card.css';
 import useDynTabs from 'react-dyn-tabs';
 import { store } from './store';
-import { addNewTab } from './utils';
+import { serverTest } from './utils';
+import React from 'react';
 
 
 
@@ -42,15 +43,78 @@ export default function TabsManager()
       instance: instance
     })
   });
+
+  // var xPos
+  // var yPos
+  // document.addEventListener("contextmenu", (event) => {
+  //   event.preventDefault();
+  //   xPos = event.pageX + "px";
+  //   yPos = event.pageY + "px";
+  // });
   
   return (
     <>
+    {/* <ContextMenu style={{ top: xPos, left: yPos }} /> */}
       <TabList/>
-        <button onClick={addNewTab} >Add new tab</button>
+        <button onClick={()=>serverTest()} >test in server</button>
       <PanelList/>
     </>
   );
 };
+
+
+// class ContextMenu extends React.Component {
+//   state = {
+//       xPos: "0px",
+//       yPos: "0px",
+//       showMenu: false
+//   }
+
+//   componentDidMount() {
+//     document.addEventListener("click", this.handleClick);
+//     document.addEventListener("contextmenu", this.handleContextMenu);
+// }
+
+// componentWillUnmount() {
+//     document.removeEventListener("click", this.handleClick);
+//     document.removeEventListener("contextmenu", this.handleContextMenu);
+// }
+
+// handleClick = (e) => {
+//   if (this.state.showMenu) this.setState({ showMenu: false });
+// };
+
+// handleContextMenu = (e) => {
+//   e.preventDefault();
+
+//   this.setState({
+//     xPos: `${e.pageX}px`,
+//     yPos: `${e.pageY}px`,
+//     showMenu: true,
+//   });
+// };
+
+//   render() {
+//     const { showMenu, xPos, yPos } = this.state;
+
+//     if (showMenu)
+//       return (
+//         <ul
+//           className="menu"
+//           style={{
+//             top: yPos,
+//             left: xPos,
+//           }}
+//         >
+//           <li>Login</li>
+//           <li>Register</li>
+//           <li>Open Profile</li>
+//         </ul>
+//       );
+//     else return null;
+//   }
+  
+// }
 
 export function TabPanel(props) {
   const { children, index, ...other } = props;
