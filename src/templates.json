@@ -96,7 +96,7 @@
   },
   {
     "name": "Avarage", "icon": "avarage.png", "color": "deepskyblue", "shape": "RoundedRectangle",
-    "inports": ["A","B","C","D","E"],
+    "inports": ["A","B","C","D","E","F","G","H"],
       "outports": ["avg"]
   }
 ]}

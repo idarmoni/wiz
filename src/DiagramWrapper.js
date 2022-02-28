@@ -1,5 +1,4 @@
 import * as go from 'gojs';
-import { save,saveall,savercp} from './utils';
 import { ReactDiagram } from 'gojs-react';
 import {store} from './store'
 
@@ -53,6 +52,10 @@ export const DiagramWrapper = function (props) {
    * and maybe doing other initialization tasks like customizing tools.
    * The model's data should not be set here, as the ReactDiagram component handles that.
    */
+
+  
+   
+    
   const initDiagram = () => {
     // set your license key here before creating the diagram: go.Diagram.licenseKey = "...";
 
@@ -60,8 +63,6 @@ export const DiagramWrapper = function (props) {
       if (evt.isTransactionFinished) {
         store.dispatch({
           type:'change recipe',
-          rcpName:props.model.recipeName,
-          rcpid: props.rcpName,
           rcp:diagram.model.toJson(),
           index:props.index})
       }

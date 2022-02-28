@@ -32,6 +32,8 @@ class Canvas extends React.Component {
     this.handleModelChange = this.handleModelChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleRelinkChange = this.handleRelinkChange.bind(this);
+
+    
   }
 
 
@@ -209,6 +211,7 @@ class Canvas extends React.Component {
   render() {
     const selectedData = this.state.selectedData;
     var diagramprops = {
+      rcpid: this.props.rcpid,
       rcpName: this.props.rcpName,
       index: this.props.index,
       model: this.state.model,

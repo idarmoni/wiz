@@ -3,11 +3,17 @@ import { TabPanel } from "./TabsManager";
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 
-
-  export function savercp(rcpid,rcp) {
+  export function savercp(rcpid,rcp,rcpName) {
     // alert('saving the file ' + rcpid);
+
+    // var state = store.getState()
+    if(rcpName){
+    rcp.recipeName = rcpName
+    }
+    rcp={recipeName:rcp.recipeName,nodeDataArray:rcp.nodeDataArray,linkDataArray:rcp.linkDataArray}
+    // console.log(rcp.recipeName)
     var temp = JSON.stringify(rcp,null,'\t')
-    
+
     // Simple POST request with a JSON body using fetch
     const requestOptions = {
       method: 'POST',
@@ -24,7 +30,7 @@ export function saveall()
   var recipeMap = store.getState().recipeMap
   for(const index in recipeMap)
   {
-    savercp(recipeMap[index].rcpName,recipeMap[index].rcp)
+    savercp(index,recipeMap[index].rcp,recipeMap[index].rcpName)
   }
 }
 
@@ -32,31 +38,29 @@ export function save()
 {
   var recipeMap = store.getState().recipeMap
   var index = store.getState().currentIndex
-  savercp(recipeMap[index].rcpName,recipeMap[index].rcp)
+  savercp(index,recipeMap[index].rcp,recipeMap[index].rcpName)
 }
 
-
-var maxtabid=0
-
 export const addNewTab = function () {
-  maxtabid+=1
-
+  const enteredName = prompt('Please enter your recipe name')
   const uuidV4 = uuidv4()
-  addTab(uuidV4,'new recipe '+maxtabid)
+  addTab(uuidV4,enteredName)
 };
 
 export const addTab = function (tabid,fileName) {
-  // alert('open '+ tabid +' '+fileName)
   var _instance = store.getState().instance
   if(!_instance) return
   // open tab
-  _instance.open({id: tabid, title: fileName, panelComponent: (props) => <TabPanel  index={tabid}/>}).then(() => {
+  _instance.open({id: tabid, title: fileName, panelComponent: (props) => <TabPanel  index={tabid} rcpName={fileName}/>}).then(() => {
     console.log('tab '+tabid+' is open');
   });
   // switch to tab
   _instance.select(tabid).then(() => {
     console.log('tab '+tabid+' is selected');
   });
+
+  changRCPName(fileName,tabid)
+  
 };
 
 export function serverTest(){
@@ -68,4 +72,11 @@ export function serverTest(){
     .catch(error => {
       console.error("error fetching data: ", error);
     })
+}
+
+export function changRCPName(fileName,tabid){
+store.dispatch({
+  type:'change recipe name',
+  rcpName:fileName,
+  index:tabid})
 }

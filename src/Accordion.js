@@ -6,7 +6,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Palette from './Palette';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { addTab } from './utils';
+import { addTab,changRCPName } from './utils';
 
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
@@ -15,13 +15,28 @@ import Box from '@mui/material/Box';
 
 
 
+
 export const SidePannel = function () {
+
+ 
   
   const [data, setData] = useState("loading...");
    var recipes = []
     for (var i in data) {
       const index = i
-      recipes.push(<Button onClick={()=>addTab(data[index].id,data[index].recipeName)}>{data[i].recipeName}</Button>)
+      recipes.push(
+      <Button onClick={()=>addTab(data[index].id,data[index].recipeName)}
+      onContextMenu={()=>{
+        
+          const enteredName = prompt('Please enter new name for the recipe')
+          //changRCPName(enteredName,data[index].id)
+          addTab(data[index].id,enteredName)
+          
+      }
+      }
+      >
+        {data[i].recipeName}
+        </Button>)
     }
   
     useEffect(() => {
