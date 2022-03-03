@@ -66,7 +66,7 @@ export function TabPanel(props) {
   useEffect(() => {
     const fetchData = async () => {
       await axios(
-        `http://localhost:3001/files/` + rcpid,
+        `http://localhost:3001/recipes/` + rcpid,
       ).then(response => {
         setData(response.data)
       })
@@ -80,7 +80,7 @@ export function TabPanel(props) {
 
     fetchData();
     
-  }, []);
+  },[]);
   
   if (loading) return "loading..."
   return (

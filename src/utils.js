@@ -2,6 +2,8 @@ import { store } from "./store";
 import { TabPanel } from "./TabsManager";
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
+// import Button from '@mui/material/Button';
+
 
   export function savercp(rcpid,rcp,rcpName) {
     // alert('saving the file ' + rcpid);
@@ -20,7 +22,7 @@ import axios from 'axios';
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ fileName: rcpid, rcp: temp})
     };
-    fetch('http://localhost:3001/files', requestOptions)
+    fetch('http://localhost:3001/recipes', requestOptions)
       .then(response => response.json());
   }  
 
@@ -43,8 +45,18 @@ export function save()
 
 export const addNewTab = function () {
   const enteredName = prompt('Please enter your recipe name')
+  if(!enteredName)return;
   const uuidV4 = uuidv4()
   addTab(uuidV4,enteredName)
+  // var button = document.createElement('Button')
+  
+  // document.getElementById('recipesButtons').appendChild(button)
+  // button.innerHTML=
+  // <Button id={uuidV4+'_button'} onClick={()=>addTab(uuidV4,enteredName)}
+  // onContextMenu={()=>changtabName(uuidV4)}
+  // >
+  //   {enteredName}
+  //   </Button>
 };
 
 export const addTab = function (tabid,fileName) {
@@ -62,6 +74,19 @@ export const addTab = function (tabid,fileName) {
   changRCPName(fileName,tabid)
   
 };
+
+export const changtabName = function (tabid) {
+
+        
+  const enteredName = prompt('Please enter new name for the recipe')
+  if(!enteredName)return;
+  //changRCPName(enteredName,data[index].id)
+  addTab(tabid,enteredName)
+  document.getElementById(tabid+'_button').textContent=enteredName
+  var _instance = store.getState().instance
+  _instance.setTab(tabid, {title: enteredName})
+  _instance.refresh()
+}
 
 export function serverTest(){
   axios(

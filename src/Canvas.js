@@ -209,7 +209,7 @@ class Canvas extends React.Component {
   }
 
   render() {
-    const selectedData = this.state.selectedData;
+    // const selectedData = this.state.selectedData;
     var diagramprops = {
       rcpid: this.props.rcpid,
       rcpName: this.props.rcpName,

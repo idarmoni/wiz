@@ -1,21 +1,22 @@
 import { SidePannel } from './Accordion';
-import {DirectionStack} from "./TopPannel"
+import { DirectionStack } from "./TopPannel"
 import React from 'react';
 
 import TabsManager from './TabsManager';
 
 class App extends React.Component {
-  render() 
-{ 
+  render() {
     return (
       <div>
         <DirectionStack id="directionStack" />
-        <td style={{ width: 200 }}>
-          <SidePannel />
-        </td>
-        <td style={{ width: 2000 }}>
-          <TabsManager/>
-        </td>
+        <tr>
+          <td style={{ width: 200 }}>
+            <SidePannel />
+          </td>
+          <td style={{ width: 2000 }}>
+            <TabsManager />
+          </td>
+        </tr>
       </div>
     )
   }

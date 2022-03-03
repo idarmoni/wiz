@@ -6,7 +6,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Palette from './Palette';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { addTab,changRCPName } from './utils';
+import { addTab,changtabName } from './utils';
 
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
@@ -20,31 +20,24 @@ export const SidePannel = function () {
 
  
   
-  const [data, setData] = useState("loading...");
+  const [recipesData, setRecipesData] = useState("loading...");
    var recipes = []
-    for (var i in data) {
+    for (var i in recipesData) {
       const index = i
       recipes.push(
-      <Button onClick={()=>addTab(data[index].id,data[index].recipeName)}
-      onContextMenu={()=>{
-        
-          const enteredName = prompt('Please enter new name for the recipe')
-          //changRCPName(enteredName,data[index].id)
-          addTab(data[index].id,enteredName)
-          
-      }
-      }
+      <Button id={recipesData[index].id+'_button'} onClick={()=>addTab(recipesData[index].id,recipesData[index].recipeName)}
+      onContextMenu={()=>changtabName(recipesData[index].id)}
       >
-        {data[i].recipeName}
+        {recipesData[i].recipeName}
         </Button>)
     }
   
     useEffect(() => {
       const fetchData = async () => {
         await axios(
-          `http://localhost:3001/files/`,
+          `http://localhost:3001/recipes/`,
         ).then(response => {
-          setData(response.data)
+          setRecipesData(response.data)
         })
           .catch(error => {
             console.error("error fetching data: ", error);
@@ -53,16 +46,73 @@ export const SidePannel = function () {
       fetchData();
     }, []);
 
+    
+  const [FBFData, setFBFData] = useState("loading...");
+  var FBFs = []
+   for (var i in FBFData) {
+     const index = i
+     FBFs.push(
+     <Button id={FBFData[index]+'_button'}>
+       {FBFData[i]}
+       </Button>)
+   }
+ 
+   useEffect(() => {
+     const fetchData = async () => {
+       await axios(
+         `http://localhost:3001/fbfs/`,
+       ).then(response => {
+         setFBFData(response.data)
+       })
+         .catch(error => {
+           console.error("error fetching data: ", error);
+         })
+     };
+     fetchData();
+   }, []);
+
   return (
     <div>
 
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel2a-content"
-          id="panel2a-header"
         >
-          <Typography>recipes</Typography>
+          <Typography >
+            recipes
+            </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+        <Box
+      sx={{
+        display: 'flex',
+        '& > *': {
+          width:150,
+        },
+      }}
+    >
+      <ButtonGroup id ='recipesButtons'
+      
+        orientation="vertical"
+        aria-label="vertical outlined button group"
+      >
+       
+        {recipes}
+      </ButtonGroup>
+      
+      
+    </Box>
+          
+        </AccordionDetails>
+      </Accordion>
+
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+        >
+          <Typography >
+            FBFs
+            </Typography>
         </AccordionSummary>
         <AccordionDetails>
         <Box
@@ -78,7 +128,8 @@ export const SidePannel = function () {
         orientation="vertical"
         aria-label="vertical outlined button group"
       >
-        {recipes}
+       
+        {FBFs}
       </ButtonGroup>
       
       
@@ -112,9 +163,7 @@ export const SidePannel = function () {
 
       <Accordion>
         <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel2a-content"
-          id="panel2a-header">
+          expandIcon={<ExpandMoreIcon />}>
 
           <Typography>Basic Math</Typography>
         </AccordionSummary>
@@ -137,8 +186,6 @@ export const SidePannel = function () {
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel2a-content"
-          id="panel2a-header"
         >
           <Typography>Graphs</Typography>
         </AccordionSummary>
@@ -149,8 +196,6 @@ export const SidePannel = function () {
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel2a-content"
-          id="panel2a-header"
         >
           <Typography>Widgets</Typography>
         </AccordionSummary>

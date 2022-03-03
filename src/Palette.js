@@ -128,25 +128,7 @@ export const Palette = function (props) {
     makeTemplate(temp.Templates[templateindex])
     setPalleteTemplates(temp.Templates[templateindex])
   }
-    
-
-  
-    const animateFadeDown = (e) => {
-      const animation = new go.Animation();
-      animation.isViewportUnconstrained = true;
-      animation.easing = go.Animation.EaseOutExpo;
-      animation.duration = 900;
-      animation.add(
-        e.diagram,
-        'position',
-        e.diagram.position.copy().offset(0, 200),
-        e.diagram.position
-      );
-      animation.add(e.diagram, 'opacity', 0, 1);
-      animation.start();
-    };
-
-    
+        
     const myPalette = $(go.Palette, {
       nodeTemplateMap: paletteNodeTemplateMap
     });
