@@ -1,8 +1,6 @@
 import { store } from "./store";
 import { TabPanel } from "./TabsManager";
 import { v4 as uuidv4 } from 'uuid';
-import axios from 'axios';
-// import Button from '@mui/material/Button';
 
 
   export function savercp(rcpid,rcp,rcpName) {
@@ -88,15 +86,33 @@ export const changtabName = function (tabid) {
   _instance.refresh()
 }
 
-export function serverTest(){
-  axios(
-    `http://localhost:3001/test/abe569df-f696-4956-8200-4313b0675e5b`,
-  ).then(response => {
-    //setData(response.data)
-  })
-    .catch(error => {
-      console.error("error fetching data: ", error);
-    })
+export function executetemp(){
+  var matchs = [
+    { index: 5, inputKey: -17 },
+    { index: 3, inputKey: -16 },
+    { index: 9, inputKey: -15 },
+    { index: 7, inputKey: -14 },
+    { index: 4, inputKey: -13 },
+    { index: 2, inputKey: -12 },
+    { index: 5, inputKey: -11 },
+  ]
+  execute(matchs)
+}
+
+export function execute(matchs){
+  var id=store.getState().currentIndex
+  var topost = {
+    recipeid: id,
+    fbfName:'YRE45.fbf',
+    matchs:matchs}
+
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(topost)
+  };
+  fetch(`http://localhost:3001/execute`, requestOptions)
+    // .then(response => response.json());
 }
 
 export function changRCPName(fileName,tabid){

@@ -13,6 +13,8 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 
 import Box from '@mui/material/Box';
 
+import RichObjectTreeView from './Tree'
+
 
 
 
@@ -49,18 +51,16 @@ export const SidePannel = function () {
     
   const [FBFData, setFBFData] = useState("loading...");
   var FBFs = []
-   for (var i in FBFData) {
-     const index = i
-     FBFs.push(
-     <Button id={FBFData[index]+'_button'}>
-       {FBFData[i]}
-       </Button>)
+
+  
+   for (i in FBFData) {
+    FBFs.push(<RichObjectTreeView dataTree = {FBFData[i]}></RichObjectTreeView>)
    }
  
    useEffect(() => {
      const fetchData = async () => {
        await axios(
-         `http://localhost:3001/fbfs/`,
+         `http://localhost:3001/fbf/`,
        ).then(response => {
          setFBFData(response.data)
        })

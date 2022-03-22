@@ -1,19 +1,14 @@
 import * as go from 'gojs';
 import { ReactDiagram } from 'gojs-react';
-import {store} from './store'
-
+import { store } from './store'
 import { GuidedDraggingTool } from './GuidedDraggingTool';
 import { nodeTemplateMap } from './Palette'
-
-
+import * as utils from './utils';
 
 
 var $ = go.GraphObject.make;
 
-
-
 export const DiagramWrapper = function (props) {
-
   const diagram =
     $(go.Diagram,
       {
@@ -53,18 +48,18 @@ export const DiagramWrapper = function (props) {
    * The model's data should not be set here, as the ReactDiagram component handles that.
    */
 
-  
-   
-    
+
+   var matchs=[]
   const initDiagram = () => {
     // set your license key here before creating the diagram: go.Diagram.licenseKey = "...";
 
     diagram.addModelChangedListener(function (evt) {
       if (evt.isTransactionFinished) {
         store.dispatch({
-          type:'change recipe',
-          rcp:diagram.model.toJson(),
-          index:props.index})
+          type: 'change recipe',
+          rcp: diagram.model.toJson(),
+          index: props.index
+        })
       }
     });
 
@@ -81,6 +76,25 @@ export const DiagramWrapper = function (props) {
         $(go.Shape, { stroke: "gray", fill: "gray", toArrow: "Standard" })
       );
     diagram.layout = $(go.LayeredDigraphLayout, { direction: 0 });
+
+
+    var selectionButton = document.getElementById("selectionButton");
+
+    selectionButton.addEventListener("click", function () {
+      if(diagram.selection.first()){
+        matchs.push({ index: parseInt(store.getState().treeSelected), inputKey: diagram.selection.first().key })
+        console.log('matchs',matchs)
+        document.getElementById("matchsview").value = matchs.toString()
+        
+
+      }
+    });
+
+    var executeButton = document.getElementById("executeButton");
+
+    executeButton.addEventListener("click", function () {
+      utils.execute(matchs)
+    });
 
 
     return diagram;
@@ -100,9 +114,9 @@ export const DiagramWrapper = function (props) {
           onModelChange={props.onModelChange}
           skipsDiagramUpdate={props.skipsDiagramUpdate}
         />
-
-
+        {/* <button id={'selectionButton'}></button> */}
       </div>
     </div>
   );
+
 }

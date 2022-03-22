@@ -35,7 +35,8 @@ function counterReducer(state = initialState, action) {
       return { ...state, currentIndex: action.index }
     case 'create instance':
       return { ...state, instance: action.instance }
-
+    case 'change tree select':
+      return {...state, treeSelected:action.id}
 
     default:
       // If the reducer doesn't care about this action type,

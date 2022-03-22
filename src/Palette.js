@@ -56,6 +56,7 @@ function makeTemplate(templatejson) {
       { width: 100, height: 120 },
       $(go.Shape, templatejson.shape,
         {
+          name:"SHAPE",
           fill: templatejson.color, stroke: null, strokeWidth: 0,
           spot1: go.Spot.TopLeft, spot2: go.Spot.BottomRight
         }),

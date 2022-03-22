@@ -22,6 +22,7 @@
     "@emotion/styled": "^11.6.0",
     "@material-ui/icons": "^4.11.2",
     "@mui/icons-material": "^5.2.5",
+    "@mui/lab": "^5.0.0-alpha.73",
     "@mui/material": "^5.2.6",
     "@reduxjs/toolkit": "^1.7.2",
     "@types/node": "16.6.2",

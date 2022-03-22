@@ -7,8 +7,9 @@ import 'react-dyn-tabs/style/react-dyn-tabs.css';
 import 'react-dyn-tabs/themes/react-dyn-tabs-card.css';
 import useDynTabs from 'react-dyn-tabs';
 import { store } from './store';
-import { serverTest } from './utils';
+import { execute } from './utils';
 
+import * as utils from './utils';
 
 
 export default function TabsManager()
@@ -42,11 +43,13 @@ export default function TabsManager()
   document.addEventListener("contextmenu", (event) => {
      event.preventDefault();
    });
+
+   
   
   return (
     <>
       <TabList/>
-        <button onClick={()=>serverTest()} >test in server</button>
+        <button onClick={()=>utils.executetemp()} >test in server</button>
       <PanelList/>
     </>
   );
