@@ -1,11 +1,47 @@
 
 import * as go from 'gojs';
 import { ReactPalette } from 'gojs-react';
-
-export var nodeTemplateMap = new go.Map();
-export var paletteNodeTemplateMap = new go.Map();
+import {Seat,highlightSeats} from './temp'
+import {assignPeopleToSeats} from './DiagramWrapper'
 
 var $ = go.GraphObject.make;
+
+
+export var nodeTemplateMap = new go.Map();
+
+nodeTemplateMap.add("",  // default template, for people
+$(go.Node, "Auto",
+  { background: "transparent" },  // in front of all Tables
+  // when selected is in foreground layer
+  new go.Binding("layerName", "isSelected", s => s ? "Foreground" : "").ofObject(),
+  { locationSpot: go.Spot.Center },
+  new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+  new go.Binding("text", "key"),
+  { // what to do when a drag-over or a drag-drop occurs on a Node representing a table
+    mouseDragEnter: (e, node, prev) => {
+      const dragCopy = node.diagram.toolManager.draggingTool.copiedParts;  // could be copied from palette
+      highlightSeats(node, dragCopy ? dragCopy : node.diagram.selection, true);
+    },
+    mouseDragLeave: (e, node, next) => {
+      const dragCopy = node.diagram.toolManager.draggingTool.copiedParts;
+      highlightSeats(node, dragCopy ? dragCopy : node.diagram.selection, false);
+    },
+    mouseDrop: (e, node) => {
+      assignPeopleToSeats(node, node.diagram.selection, e.documentPoint);
+    }
+  },
+  $(go.Shape, "Rectangle", { fill: "blanchedalmond", stroke: null }),
+  $(go.Panel, "Viewbox",
+    { desiredSize: new go.Size(50, 38) },
+    $(go.TextBlock, { margin: 2, desiredSize: new go.Size(55, NaN), font: "8pt Verdana, sans-serif", textAlign: "center", stroke: "darkblue" },
+      new go.Binding("text", "", data => {
+        let s = data.key;
+        return s;
+      }))
+  )
+));
+export var paletteNodeTemplateMap = new go.Map();
+
 
 
 function makePorts(portsNames,leftside) {
@@ -51,7 +87,11 @@ function makePorts(portsNames,leftside) {
 function makeTemplate(templatejson) {
   var inports = makePorts(templatejson.inports,true)
   var outports = makePorts(templatejson.outports,false)
-  var node = $(go.Node, "Spot",
+  var mySeat = {}
+    if (templatejson.name == 'Input') {
+      mySeat = Seat(1, "-0.22 0.7", "0.5 1")
+    }
+  var node = $(go.Node, "Spot",tableStyle(),
     $(go.Panel, "Auto",
       { width: 100, height: 120 },
       $(go.Shape, templatejson.shape,
@@ -100,12 +140,26 @@ function makeTemplate(templatejson) {
         alignmentFocus: new go.Spot(0, 0.5, 8, 0)
       },
       inports),
+      { // what to do when a drag-over or a drag-drop occurs on a Node representing a table
+        mouseDragEnter: (e, node, prev) => {
+          const dragCopy = node.diagram.toolManager.draggingTool.copiedParts;  // could be copied from palette
+          highlightSeats(node, dragCopy ? dragCopy : node.diagram.selection, true);
+        },
+        mouseDragLeave: (e, node, next) => {
+          const dragCopy = node.diagram.toolManager.draggingTool.copiedParts;
+          highlightSeats(node, dragCopy ? dragCopy : node.diagram.selection, false);
+        },
+        mouseDrop: (e, node) => {
+          assignPeopleToSeats(node, node.diagram.selection, e.documentPoint);
+        }
+      },
     $(go.Panel, "Vertical",
       {
         alignment: go.Spot.Right,
         alignmentFocus: new go.Spot(1, 0.5, -8, 0)
       },
-      outports)
+      outports),
+      mySeat,
   );
   nodeTemplateMap.add(templatejson.name, node);
 }
@@ -150,6 +204,28 @@ export const Palette = function (props) {
   )
 
   
+}
+
+
+function tableStyle() {
+  return [
+    { background: "transparent" },
+    { layerName: "Background" },  // behind all Persons
+    { locationSpot: go.Spot.Center, locationObjectName: "TABLESHAPE" },
+    new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+    new go.Binding("angle").makeTwoWay(),
+    { // what to do when a drag-over or a drag-drop occurs on a Node representing a table
+      mouseDragEnter: (e, node, prev) => {
+        const dragCopy = node.diagram.toolManager.draggingTool.copiedParts;  // could be copied from palette
+        highlightSeats(node, dragCopy ? dragCopy : node.diagram.selection, true);
+      },
+      mouseDragLeave: (e, node, next) => {
+        const dragCopy = node.diagram.toolManager.draggingTool.copiedParts;
+        highlightSeats(node, dragCopy ? dragCopy : node.diagram.selection, false);
+      },
+      mouseDrop: (e, node) => assignPeopleToSeats(node, node.diagram.selection, e.documentPoint)
+    }
+  ];
 }
 
 export default Palette

@@ -5,7 +5,7 @@
       "outports": ["OUT"]
     },
   {
-    "name": "Input", "icon": "input.png", "color": "forestgreen", "shape": "RoundedRectangle",
+    "name": "Input", "icon": "input.png", "color": "forestgreen", "shape": "Ellipse",
       "inports": [],
       "outports": ["OUT"]
   },

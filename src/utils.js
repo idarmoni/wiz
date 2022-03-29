@@ -1,6 +1,7 @@
 import { store } from "./store";
 import { TabPanel } from "./TabsManager";
 import { v4 as uuidv4 } from 'uuid';
+import {matchs} from './DiagramWrapper'
 
 
   export function savercp(rcpid,rcp,rcpName) {
@@ -87,15 +88,7 @@ export const changtabName = function (tabid) {
 }
 
 export function executetemp(){
-  var matchs = [
-    { index: 5, inputKey: -17 },
-    { index: 3, inputKey: -16 },
-    { index: 9, inputKey: -15 },
-    { index: 7, inputKey: -14 },
-    { index: 4, inputKey: -13 },
-    { index: 2, inputKey: -12 },
-    { index: 5, inputKey: -11 },
-  ]
+  
   execute(matchs)
 }
 
