@@ -6,7 +6,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Palette from './Palette';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { addTab,changtabName } from './utils';
+import { addTab, changtabName } from './utils';
 
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
@@ -14,65 +14,65 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Box from '@mui/material/Box';
 
 import RichObjectTreeView from './Tree'
-import {Gojstree} from './gojstree'
+import { Gojstree } from './gojstree'
 
 
 
 
 export const SidePannel = function () {
 
- 
-  
+
+
   const [recipesData, setRecipesData] = useState("loading...");
-   var recipes = []
-    for (var i in recipesData) {
-      const index = i
-      recipes.push(
-      <Button id={recipesData[index].id+'_button'} onClick={()=>addTab(recipesData[index].id,recipesData[index].recipeName)}
-      onContextMenu={()=>changtabName(recipesData[index].id)}
+  var recipes = []
+  for (var i in recipesData) {
+    const index = i
+    recipes.push(
+      <Button id={recipesData[index].id + '_button'} onClick={() => addTab(recipesData[index].id, recipesData[index].recipeName)}
+        onContextMenu={() => changtabName(recipesData[index].id)}
       >
         {recipesData[i].recipeName}
-        </Button>)
-    }
-  
-    useEffect(() => {
-      const fetchData = async () => {
-        await axios(
-          `http://localhost:3001/recipes/`,
-        ).then(response => {
-          setRecipesData(response.data)
-        })
-          .catch(error => {
-            console.error("error fetching data: ", error);
-          })
-      };
-      fetchData();
-    }, []);
+      </Button>)
+  }
 
-    
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios(
+        `http://localhost:3001/recipes/`,
+      ).then(response => {
+        setRecipesData(response.data)
+      })
+        .catch(error => {
+          console.error("error fetching data: ", error);
+        })
+    };
+    fetchData();
+  }, []);
+
+
   const [FBFData, setFBFData] = useState("loading...");
   var FBFs = []
 
-  
-   for (i in FBFData) {
+
+  for (i in FBFData) {
     // FBFs.push(<RichObjectTreeView dataTree = {FBFData[i]}></RichObjectTreeView>)
     console.log(FBFData[i])
-    FBFs.push(<Gojstree treedata = {FBFData[i]}></Gojstree>)
-   }
- 
-   useEffect(() => {
-     const fetchData = async () => {
-       await axios(
-         `http://localhost:3001/fbf/`,
-       ).then(response => {
-         setFBFData(response.data)
-       })
-         .catch(error => {
-           console.error("error fetching data: ", error);
-         })
-     };
-     fetchData();
-   }, []);
+    FBFs.push(<Gojstree treedata={FBFData[i]}></Gojstree>)
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios(
+        `http://localhost:3001/fbf/`,
+      ).then(response => {
+        setFBFData(response.data)
+      })
+        .catch(error => {
+          console.error("error fetching data: ", error);
+        })
+    };
+    fetchData();
+  }, []);
 
   return (
     <div>
@@ -83,29 +83,30 @@ export const SidePannel = function () {
         >
           <Typography >
             recipes
-            </Typography>
+          </Typography>
         </AccordionSummary>
         <AccordionDetails>
-        <Box
-      sx={{
-        display: 'flex',
-        '& > *': {
-          width:150,
-        },
-      }}
-    >
-      <ButtonGroup id ='recipesButtons'
-      
-        orientation="vertical"
-        aria-label="vertical outlined button group"
-      >
-       
-        {recipes}
-      </ButtonGroup>
-      
-      
-    </Box>
-          
+          <Box
+            sx={{
+              display: 'flex',
+              '& > *': {
+                width: 150,
+                maxHeight:300,
+                overflow:'auto'
+              },
+            }}
+          >
+            <ButtonGroup id='recipesButtons'
+              orientation="vertical"
+              aria-label="vertical outlined button group"
+            >
+
+              {recipes}
+            </ButtonGroup>
+
+
+          </Box>
+
         </AccordionDetails>
       </Accordion>
 
@@ -115,29 +116,33 @@ export const SidePannel = function () {
         >
           <Typography >
             FBFs
-            </Typography>
+          </Typography>
         </AccordionSummary>
         <AccordionDetails>
-        <Box
-      sx={{
-        display: 'flex',
-        '& > *': {
-          width:150,
-        },
-      }}
-    >
-      <ButtonGroup
-      
-        orientation="vertical"
-        aria-label="vertical outlined button group"
-      >
-       
-        {FBFs}
-      </ButtonGroup>
-      
-      
-    </Box>
-          
+          <Box
+            sx={{
+              display: 'flex',
+              '& > *': {
+                width: 150,
+                maxHeight:300,
+                overflow:'auto'
+              },
+            }}
+
+            
+          >
+            <ButtonGroup
+
+              orientation="vertical"
+              aria-label="vertical outlined button group"
+            >
+
+              {FBFs}
+            </ButtonGroup>
+
+
+          </Box>
+
         </AccordionDetails>
       </Accordion>
 

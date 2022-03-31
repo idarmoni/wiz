@@ -13,7 +13,7 @@ function counterReducer(state = initialState, action) {
   switch (action.type) {
     case 'change recipe':
       var temp = JSON.parse(action.rcp)
-      // temp = {nodeDataArray: temp.nodeDataArray, linkDataArray: temp.linkDataArray }
+      
       if(!state.recipeMap[action.index])
       {
         state.recipeMap[action.index]={}

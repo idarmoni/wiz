@@ -86,10 +86,12 @@ export function Gojstree(props) {
         myDiagram.contentAlignment = go.Spot.TopLeft;
 
 
-
-        var nodeDataArray = //props.treedata
-            [{ "key": "YRE45.", "name": "YRE45", "title": "YRE45." }, { "key": "YRE45.yte.", "name": "yte", "title": "YRE45.yte.", "parent": "YRE45." }, { "key": "YRE45.yte.ew.", "name": "ew", "title": "YRE45.yte.ew.", "parent": "YRE45.yte.", "index": "001" }, { "key": "YRE45.yte.gt.", "name": "gt", "title": "YRE45.yte.gt.", "parent": "YRE45.yte.", "index": "002" }, { "key": "YRE45.yte.lk.", "name": "lk", "title": "YRE45.yte.lk.", "parent": "YRE45.yte.", "index": "003" }, { "key": "YRE45.yte.po.", "name": "po", "title": "YRE45.yte.po.", "parent": "YRE45.yte.", "index": "004" }, { "key": "YRE45.yte.re.", "name": "re", "title": "YRE45.yte.re.", "parent": "YRE45.yte.", "index": "005" }, { "key": "YRE45.opop.", "name": "opop", "title": "YRE45.opop.", "parent": "YRE45." }, { "key": "YRE45.opop.ert.", "name": "ert", "title": "YRE45.opop.ert.", "parent": "YRE45.opop.", "index": "006" }, { "key": "YRE45.opop.fd.", "name": "fd", "title": "YRE45.opop.fd.", "parent": "YRE45.opop.", "index": "007" }, { "key": "YRE45.opop.sg.", "name": "sg", "title": "YRE45.opop.sg.", "parent": "YRE45.opop.", "index": "008" }, { "key": "YRE45.opop.et.", "name": "et", "title": "YRE45.opop.et.", "parent": "YRE45.opop.", "index": "009" }, { "key": "YRE45.opop.wte.", "name": "wte", "title": "YRE45.opop.wte.", "parent": "YRE45.opop.", "index": "010" }]
-
+        
+        var nodeDataArray
+        if(typeof props.treedata == 'array') {
+        nodeDataArray = props.treedata
+        }
+        
         myDiagram.model = new go.TreeModel(nodeDataArray);
         return myDiagram
     }

@@ -4,13 +4,20 @@ import { v4 as uuidv4 } from 'uuid';
 import {matchs} from './DiagramWrapper'
 
 
-  export function savercp(rcpid,rcp,rcpName) {
+  function savercp(rcpid,rcp,rcpName) {
     // alert('saving the file ' + rcpid);
 
     // var state = store.getState()
     if(rcpName){
     rcp.recipeName = rcpName
     }
+
+    rcp.nodeDataArray = rcp.nodeDataArray.filter(x=>x.category)
+    rcp.nodeDataArray.forEach(element => {
+      element.loc=undefined
+      element.guests=undefined
+    });
+    
     rcp={recipeName:rcp.recipeName,nodeDataArray:rcp.nodeDataArray,linkDataArray:rcp.linkDataArray}
     // console.log(rcp.recipeName)
     var temp = JSON.stringify(rcp,null,'\t')

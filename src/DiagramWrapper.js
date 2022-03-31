@@ -15,16 +15,15 @@ export const DiagramWrapper = function (props) {
       {
         allowClipboard: false,
         draggingTool: $(SpecialDraggingTool),
-        // For this sample, automatically show the state of the diagram's model on the page
-        "ModelChanged": e => {
-          if (e.isTransactionFinished) {
-            store.dispatch({
-              type: 'change recipe',
-              rcp: diagram.model.toJson(),
-              index: props.index
-            })
-          }
-        },
+        // "ModelChanged": e => {
+        //   if (e.isTransactionFinished) {
+        //     store.dispatch({
+        //       type: 'change recipe',
+        //       rcp: diagram.model.toJson(),
+        //       index: props.index
+        //     })
+        //   }
+        // },
         'undoManager.isEnabled': true,  // must be set to allow for model change listening
         // 'undoManager.maxHistoryLength': 0,  // uncomment disable undo/redo functionality
         'clickCreatingTool.archetypeNodeData': { text: 'new node', color: 'lightblue' },
@@ -60,7 +59,15 @@ export const DiagramWrapper = function (props) {
 
   const initDiagram = () => {
     // set your license key here before creating the diagram: go.Diagram.licenseKey = "...";
-
+    diagram.addModelChangedListener(function (evt) {
+      var u = JSON.parse(diagram.model.toJson())
+      if (evt.isTransactionFinished) {
+        store.dispatch({
+          type:'change recipe',
+          rcp:diagram.model.toJson(),
+          index:props.index})
+      }
+    });
 
     // what to do when a drag-drop occurs in the Diagram's background
     diagram.mouseDrop = e => {
@@ -111,9 +118,9 @@ export const DiagramWrapper = function (props) {
           nodeDataArray={props.model.nodeDataArray}
           linkDataArray={props.model.linkDataArray}
 
-          modelData={props.model.modelData}
-          onModelChange={props.onModelChange}
-          skipsDiagramUpdate={props.skipsDiagramUpdate}
+          // modelData={props.model.modelData}
+          // onModelChange={props.onModelChange}
+          // skipsDiagramUpdate={props.skipsDiagramUpdate}
         />
       </div>
     </div>
@@ -150,7 +157,7 @@ function unassignSeat(tempdiagram, guest) {
 
 // Given a "Table" Node, assign one guest data to a seat at that table.
 // This tries to assign the unoccupied seat that is closest to the given point in document coordinates.
-export function assignSeat(node, guest, pt) {
+function assignSeat(node, guest, pt) {
   diagram.layout = $(go.Layout)
   if (isPerson(node)) {  // refer to the person's table instead
     node = node.diagram.findNodeForKey(node.data.table);
@@ -179,12 +186,17 @@ export function assignSeat(node, guest, pt) {
 
 
 // Position a single guest Node to be at the location of the seat to which they are assigned.
-export function positionPersonAtSeat(guest) {
+function positionPersonAtSeat(guest) {
   if (guest instanceof go.GraphObject) throw Error("A guest object must not be a GraphObject: " + guest.toString());
   if (!guest || !guest.table || !guest.seat) return;
   const tempdiagram = diagram;
-  const table = tempdiagram.findPartForKey(guest.table);
-  const person = tempdiagram.findPartForData(guest);
+  console.log(tempdiagram)
+
+  var table = tempdiagram.findPartForKey(guest.table);
+  // const table2 = tempdiagram.nodes//.filter(x => x.key == guest.table)?.first();
+  var person = tempdiagram.findPartForData(guest);
+  // console.log(table)
+  // console.log(person)
   if (table && person) {
     const seat = table.findObject(guest.seat.toString());
     const loc = seat.getDocumentPoint(go.Spot.Center);
@@ -217,7 +229,7 @@ export function assignPeopleToSeats(node, coll, pt) {
 
 // Position the nodes of all of the guests that are seated at this table
 // to be at their corresponding seat elements of the given "Table" Node.
-export function positionPeopleAtSeats(node) {
+function positionPeopleAtSeats(node) {
   if (isPerson(node)) {  // refer to the person's table instead
     node = node.diagram.findNodeForKey(node.data.table);
     if (node === null) return;
@@ -232,7 +244,7 @@ export function positionPeopleAtSeats(node) {
 }
 
 // Automatically drag people Nodes along with the table Node at which they are seated.
-export class SpecialDraggingTool extends go.DraggingTool {
+class SpecialDraggingTool extends go.DraggingTool {
   computeEffectiveCollection(parts) {
     const map = super.computeEffectiveCollection(parts);
     // for each Node representing a table, also drag all of the people seated at that table
