@@ -2,11 +2,10 @@ import * as go from 'gojs';
 import { ReactDiagram } from 'gojs-react';
 import { store } from './store'
 import { nodeTemplateMap } from './Palette'
-import { isTable, isPerson,findClosestUnoccupiedSeat } from './temp'
+import { isTable, isPerson, findClosestUnoccupiedSeat } from './temp'
 
 
 var diagram
-export var matchs = []
 var $ = go.GraphObject.make;
 
 export const DiagramWrapper = function (props) {
@@ -56,16 +55,17 @@ export const DiagramWrapper = function (props) {
    */
 
 
-
   const initDiagram = () => {
+
+
     // set your license key here before creating the diagram: go.Diagram.licenseKey = "...";
     diagram.addModelChangedListener(function (evt) {
       var u = JSON.parse(diagram.model.toJson())
       if (evt.isTransactionFinished) {
         store.dispatch({
-          type:'change recipe',
-          rcp:diagram.model.toJson(),
-          index:props.index})
+          type: 'change recipe',
+          rcp: diagram.model.toJson(),
+        })
       }
     });
 
@@ -97,17 +97,29 @@ export const DiagramWrapper = function (props) {
         $(go.Shape, { stroke: "gray", fill: "gray", toArrow: "Standard" })
       );
     diagram.layout = $(go.LayeredDigraphLayout, { direction: 0 });
-    
+
     diagram.layout.layeringOption = go.LayeredDigraphLayout.LayerLongestPathSource;
 
     diagram.addDiagramListener("SelectionDeleting", e => {
-      unassignSeat(diagram,e.subject.iterator.first().data)
+      unassignSeat(diagram, e.subject.iterator.first().data)
+
+    })
+    diagram.addDiagramListener('AnimationStarting', e => {
+      if (props.matchs) {
+
+        props.matchs.forEach(x => {
+          diagram.model.addNodeData(x)
+          var inputNode = diagram.findNodeForKey(x.inputKey)
+          assignSeat(inputNode, x)
+          positionPeopleAtSeats(inputNode);
+        })
+      }
     })
 
     return diagram;
   }
 
-  
+
 
   return (
     <div>
@@ -118,9 +130,9 @@ export const DiagramWrapper = function (props) {
           nodeDataArray={props.model.nodeDataArray}
           linkDataArray={props.model.linkDataArray}
 
-          // modelData={props.model.modelData}
-          // onModelChange={props.onModelChange}
-          // skipsDiagramUpdate={props.skipsDiagramUpdate}
+        // modelData={props.model.modelData}
+        // onModelChange={props.onModelChange}
+        // skipsDiagramUpdate={props.skipsDiagramUpdate}
         />
       </div>
     </div>
@@ -137,49 +149,55 @@ function unassignSeat(tempdiagram, guest) {
   if (guest.table) {
     const table = model.findNodeDataForKey(guest.table);
     if (table) {
+      // var temp = store.getState().recipeMap[store.getState().currentIndex].matchs
+      store.dispatch({
+        type: 'filter match',
+        predicate: x => !(x.fieldname == guest.fieldname && x.inputKey == table.key)
+      })
       const guests = table.guests;
       if (guests) model.setDataProperty(guests, guest.seat.toString(), undefined);
+
     }
   }
   model.setDataProperty(guest, "table", undefined);
   model.setDataProperty(guest, "seat", undefined);
 
 
-  matchs = matchs.filter(x => x.fieldname != guest.key)//remove if x.fieldname == guest.key
-
-  // var index = matchs.findIndex(x => x.index == guest.key)
-  // if (index > -1) {
-  //   matchs.splice(index, 1);
-  // }
-  console.log(matchs)
+  console.log(store.getState().recipeMap[store.getState().currentIndex].matchs)
 
 }
 
 // Given a "Table" Node, assign one guest data to a seat at that table.
 // This tries to assign the unoccupied seat that is closest to the given point in document coordinates.
-function assignSeat(node, guest, pt) {
+function assignSeat(node, guest) {
   diagram.layout = $(go.Layout)
   if (isPerson(node)) {  // refer to the person's table instead
     node = node.diagram.findNodeForKey(node.data.table);
     if (node === null) return;
   }
   if (guest instanceof go.GraphObject) throw Error("A guest object must not be a GraphObject: " + guest.toString());
-  if (!(pt instanceof go.Point)) pt = node.location;
 
   // in case the guest used to be assigned to a different seat, perhaps at a different table
   unassignSeat(node.diagram, guest);
 
   const model = node.diagram.model;
+  if (!node.data.guests) node.data.guests = {}
   const guests = node.data.guests;
   // iterate over all seats in the Node to find one that is not occupied
-  const closestseatname = findClosestUnoccupiedSeat(node, pt);
+  const closestseatname = findClosestUnoccupiedSeat(node);
   if (closestseatname) {
     model.setDataProperty(guests, closestseatname, guest.key);
     model.setDataProperty(guest, "table", node.data.key);
     model.setDataProperty(guest, "seat", parseFloat(closestseatname));
 
-    matchs.push({ index: parseInt(guest.index), inputKey: node.data.key, fieldname:guest.key })
-    console.log(matchs)
+    store.dispatch({
+      type: 'add match',
+      index: guest.index,
+      inputkey: node.data.key,
+      fieldname: guest.fieldname
+    })
+    console.log(store.getState().recipeMap[store.getState().currentIndex].matchs)
+
   }
 }
 
@@ -190,13 +208,8 @@ function positionPersonAtSeat(guest) {
   if (guest instanceof go.GraphObject) throw Error("A guest object must not be a GraphObject: " + guest.toString());
   if (!guest || !guest.table || !guest.seat) return;
   const tempdiagram = diagram;
-  console.log(tempdiagram)
-
   var table = tempdiagram.findPartForKey(guest.table);
-  // const table2 = tempdiagram.nodes//.filter(x => x.key == guest.table)?.first();
   var person = tempdiagram.findPartForData(guest);
-  // console.log(table)
-  // console.log(person)
   if (table && person) {
     const seat = table.findObject(guest.seat.toString());
     const loc = seat.getDocumentPoint(go.Spot.Center);

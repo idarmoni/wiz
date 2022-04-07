@@ -212,8 +212,9 @@ class Canvas extends React.Component {
     // const selectedData = this.state.selectedData;
     var diagramprops = {
       rcpid: this.props.rcpid,
-      rcpName: this.props.rcpName,
+      tabName: this.props.tabName,
       index: this.props.index,
+      matchs: this.props.matchs,
       model: this.state.model,
       skipsDiagramUpdate: this.state.skipsDiagramUpdate,
       onDiagramEvent: this.handleDiagramEvent,

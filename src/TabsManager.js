@@ -7,7 +7,6 @@ import 'react-dyn-tabs/style/react-dyn-tabs.css';
 import 'react-dyn-tabs/themes/react-dyn-tabs-card.css';
 import useDynTabs from 'react-dyn-tabs';
 import { store } from './store';
-import { execute } from './utils';
 
 import * as utils from './utils';
 
@@ -49,7 +48,7 @@ export default function TabsManager()
   return (
     <>
       <TabList/>
-        <button onClick={()=>utils.executetemp()} >test in server</button>
+        <button onClick={()=>utils.execute()} >test in server</button>
       <PanelList/>
     </>
   );
@@ -57,11 +56,25 @@ export default function TabsManager()
 
 
 export function TabPanel(props) {
-  const { children, index,rcpName, ...other } = props;
+  const { children, index,tabName, ...other } = props;
 
-  const rcpid =  index
+  const rcpid =  index.split(" ")[0]
 
-  
+  // var matchs
+  const [matchs, setMatchs] = useState("loading...");
+  useEffect(() => {
+    const fetchData = async () => {
+  await axios(
+    `http://localhost:3001/matchesFiles/${index}`,
+  ).then(response => {
+    setMatchs(response.data.matchs)
+  })
+    .catch(error => {
+      console.error("error fetching data: ", error);
+    })
+  };
+    fetchData();
+  }, []);
 
   const [data, setData] = useState("");
   const [loading, setLoading] = useState(true);
@@ -94,7 +107,7 @@ export function TabPanel(props) {
       {...other}
 
     >
-      <Canvas recipe={data} rcpName={rcpName} rcpid={rcpid} index={index} />
+      <Canvas recipe={data} tabName={tabName} rcpid={rcpid} index={index} matchs ={matchs}/>
     </div>
   );
 }

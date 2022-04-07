@@ -35,7 +35,7 @@ $(go.Node, "Auto",
     { desiredSize: new go.Size(50, 38) },
     $(go.TextBlock, { margin: 2, desiredSize: new go.Size(55, NaN), font: "8pt Verdana, sans-serif", textAlign: "center", stroke: "darkblue" },
       new go.Binding("text", "", data => {
-        let s = data.key;
+        let s = data.fieldname;
         return s;
       }))
   )

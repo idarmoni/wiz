@@ -1,13 +1,11 @@
 import { store } from "./store";
 import { TabPanel } from "./TabsManager";
 import { v4 as uuidv4 } from 'uuid';
-import {matchs} from './DiagramWrapper'
 
 
   function savercp(rcpid,rcp,rcpName) {
     // alert('saving the file ' + rcpid);
 
-    // var state = store.getState()
     if(rcpName){
     rcp.recipeName = rcpName
     }
@@ -17,7 +15,7 @@ import {matchs} from './DiagramWrapper'
       element.loc=undefined
       element.guests=undefined
     });
-    
+
     rcp={recipeName:rcp.recipeName,nodeDataArray:rcp.nodeDataArray,linkDataArray:rcp.linkDataArray}
     // console.log(rcp.recipeName)
     var temp = JSON.stringify(rcp,null,'\t')
@@ -54,22 +52,13 @@ export const addNewTab = function () {
   if(!enteredName)return;
   const uuidV4 = uuidv4()
   addTab(uuidV4,enteredName)
-  // var button = document.createElement('Button')
-  
-  // document.getElementById('recipesButtons').appendChild(button)
-  // button.innerHTML=
-  // <Button id={uuidV4+'_button'} onClick={()=>addTab(uuidV4,enteredName)}
-  // onContextMenu={()=>changtabName(uuidV4)}
-  // >
-  //   {enteredName}
-  //   </Button>
 };
 
 export const addTab = function (tabid,fileName) {
   var _instance = store.getState().instance
   if(!_instance) return
   // open tab
-  _instance.open({id: tabid, title: fileName, panelComponent: (props) => <TabPanel  index={tabid} rcpName={fileName}/>}).then(() => {
+  _instance.open({id: tabid, title: fileName, panelComponent: (props) => <TabPanel  index={tabid} tabName={fileName}/>}).then(() => {
     console.log('tab '+tabid+' is open');
   });
   // switch to tab
@@ -94,18 +83,15 @@ export const changtabName = function (tabid) {
   _instance.refresh()
 }
 
-export function executetemp(){
-  
-  execute(matchs)
-}
 
-export function execute(matchs){
-  var id=store.getState().currentIndex
+export function execute(){
+  var state = store.getState()
+  var id = state.currentIndex
   var topost = {
-    recipeid: id,
+    recipeid: id.split(' ')[0],
     fbfName:'YRE45.fbf',
-    matchs:matchs}
-
+    matchs:state.recipeMap[state.currentIndex].matchs}
+var t=state.recipeMap[state.currentIndex]
   const requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

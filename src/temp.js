@@ -64,28 +64,25 @@ export function Seat(number, align, focus) {
 
 // Find the name of the unoccupied seat that is closest to the given Point.
 // This returns null if no seat is available at this table.
-export function findClosestUnoccupiedSeat(node, pt) {
+export function findClosestUnoccupiedSeat(node) {
   if (isPerson(node)) {  // refer to the person's table instead
     node = node.diagram.findNodeForKey(node.data.table);
     if (node === null) return;
   }
-  const guests = node.data.guests;
-  let closestseatname = null;
-  let closestseatdist = Infinity;
+  var guests = node.data.guests;
+  // let closestseatname = null;
+  // let closestseatdist = Infinity;
   // iterate over all seats in the Node to find one that is not occupied
   for (const sit = node.elements; sit.next();) {
     const seat = sit.value;
     if (seat.name) {
       const num = parseFloat(seat.name);
       if (isNaN(num)) continue;  // not really a "seat"
+      if (!guests) guests = [];
       if (guests[seat.name]) continue;  // already assigned
-      const seatloc = seat.getDocumentPoint(go.Spot.Center);
-      const seatdist = seatloc.distanceSquaredPoint(pt);
-      if (seatdist < closestseatdist) {
-        closestseatdist = seatdist;
-        closestseatname = seat.name;
-      }
+      return 1;
     }
   }
-  return closestseatname;
+
+  return null;
 }

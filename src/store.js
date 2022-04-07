@@ -13,17 +13,15 @@ function counterReducer(state = initialState, action) {
   switch (action.type) {
     case 'change recipe':
       var temp = JSON.parse(action.rcp)
-      
-      if(!state.recipeMap[action.index])
+
+      if(!state.recipeMap[state.currentIndex])
       {
-        state.recipeMap[action.index]={}
+        state.recipeMap[state.currentIndex]={}
       }
       return {
-        ...state, value: state.recipeMap[action.index].rcp = temp
+        ...state, value: state.recipeMap[state.currentIndex].rcp = temp
       }
     case 'change recipe name':
-      // temp = JSON.parse(action.rcp)
-      // temp.recipeName = action.rcpName
       if(!state.recipeMap[action.index])
       {
         state.recipeMap[action.index]={}
@@ -37,6 +35,20 @@ function counterReducer(state = initialState, action) {
       return { ...state, instance: action.instance }
     case 'change tree select':
       return {...state, treeSelected:action.id}
+    case 'add match':
+      if(!state.recipeMap[state.currentIndex].matchs){
+        state.recipeMap[state.currentIndex].matchs=[]
+      }
+
+      state.recipeMap[state.currentIndex].matchs.push(
+        { index: parseInt(action.index), inputKey: action.inputkey, fieldname:action.fieldname })
+      return state
+    case 'filter match':
+      if(!state.recipeMap[state.currentIndex].matchs){
+        state.recipeMap[state.currentIndex].matchs=[]
+      }
+      state.recipeMap[state.currentIndex].matchs=state.recipeMap[state.currentIndex].matchs.filter(action.predicate)
+      return state
 
     default:
       // If the reducer doesn't care about this action type,

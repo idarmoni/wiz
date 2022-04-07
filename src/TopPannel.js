@@ -25,7 +25,7 @@ export class DirectionStack extends React.Component {
           <Button onClick={utils.addNewTab} title={'new recipe'}><FileOpenIcon /></Button>
           <Button onClick={utils.saveall} title={'save all'}><SaveAltIcon/></Button>
           <Button onClick={utils.save} title = {'save'}><SaveIcon/></Button>
-          <Button onClick={utils.executetemp} title = {'execute'}><PlayCircleIcon /></Button>
+          <Button onClick={utils.execute} title = {'execute'}><PlayCircleIcon /></Button>
 
         </Stack>
       </div>

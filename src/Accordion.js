@@ -50,6 +50,33 @@ export const SidePannel = function () {
   }, []);
 
 
+  const [matchesFilessData, setmMtchesFilesData] = useState("loading...");
+  var matchesFiles = []
+  for (var i in matchesFilessData) {
+    const index = i
+    const matcheFile = matchesFilessData[index]
+    matchesFiles.push(
+      <Button id={matcheFile.recipeid + '_button'} onClick={() => AddrecipeMatched(matcheFile)}
+        onContextMenu={() => changtabName(matcheFile.recipeid)}
+      >
+        {matchesFilessData[i].recipeName + " " + matchesFilessData[i].fbfName}
+      </Button>)
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios(
+        `http://localhost:3001/matchesFiles/`,
+      ).then(response => {
+        setmMtchesFilesData(response.data)
+      })
+        .catch(error => {
+          console.error("error fetching data: ", error);
+        })
+    };
+    fetchData();
+  }, []);
+
   const [FBFData, setFBFData] = useState("loading...");
   var FBFs = []
 
@@ -91,8 +118,8 @@ export const SidePannel = function () {
               display: 'flex',
               '& > *': {
                 width: 150,
-                maxHeight:300,
-                overflow:'auto'
+                maxHeight: 300,
+                overflow: 'auto'
               },
             }}
           >
@@ -115,6 +142,39 @@ export const SidePannel = function () {
           expandIcon={<ExpandMoreIcon />}
         >
           <Typography >
+            recipesMatched
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Box
+            sx={{
+              display: 'flex',
+              '& > *': {
+                width: 150,
+                maxHeight: 300,
+                overflow: 'auto'
+              },
+            }}
+          >
+            <ButtonGroup id='matchesFilesButtons'
+              orientation="vertical"
+              aria-label="vertical outlined button group"
+            >
+
+              {matchesFiles}
+            </ButtonGroup>
+
+
+          </Box>
+
+        </AccordionDetails>
+      </Accordion>
+
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+        >
+          <Typography >
             FBFs
           </Typography>
         </AccordionSummary>
@@ -124,12 +184,12 @@ export const SidePannel = function () {
               display: 'flex',
               '& > *': {
                 width: 150,
-                maxHeight:300,
-                overflow:'auto'
+                maxHeight: 300,
+                overflow: 'auto'
               },
             }}
 
-            
+
           >
             <ButtonGroup
 
@@ -213,4 +273,17 @@ export const SidePannel = function () {
 
     </div>
   );
+
+  
+function AddrecipeMatched(matcheFile) {
+  var matchs=
+  
+   [{index: 1, inputKey: 4, fieldname: 'uyrf87.yte.ew.'},
+  {index: 2, inputKey: 5, fieldname: 'uyrf87.yte.gt.'}];
+
+  
+
+  addTab(matcheFile.recipeid + " " + matcheFile.fbfName,
+    matcheFile.recipeName + " " + matcheFile.fbfName)
+}
 }
