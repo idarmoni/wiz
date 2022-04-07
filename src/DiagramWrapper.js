@@ -140,8 +140,8 @@ export const DiagramWrapper = function (props) {
 }
 
 
-// Declare that the guest represented by the data is no longer assigned to a seat at a table.
-// If the guest had been at a table, the guest is removed from the table's list of guests.
+// Declare that the guest represented by the data is no longer assigned to the seat at a table.
+// If the guest had been at a table, the guest is removed from the table.
 function unassignSeat(tempdiagram, guest) {
   if (guest instanceof go.GraphObject) throw Error("A guest object must not be a GraphObject: " + guest.toString());
   const model = tempdiagram.model;
@@ -154,8 +154,8 @@ function unassignSeat(tempdiagram, guest) {
         type: 'filter match',
         predicate: x => !(x.fieldname === guest.fieldname && x.inputKey === table.key)
       })
-      const guests = table.guests;
-      if (guests) model.setDataProperty(guests, guest.seat.toString(), undefined);
+      if (guest)/////////////
+        model.setDataProperty(table, guest, undefined);
 
     }
   }
@@ -181,14 +181,15 @@ function assignSeat(node, guest) {
   unassignSeat(node.diagram, guest);
 
   const model = node.diagram.model;
-  if (!node.data.guests) node.data.guests = {}
-  const guests = node.data.guests;
+  // if (!node.data.guests) node.data.guests = {}
+  // const guest = node.data.guest;
   // iterate over all seats in the Node to find one that is not occupied
-  const closestseatname = findClosestUnoccupiedSeat(node);
-  if (closestseatname) {
-    model.setDataProperty(guests, closestseatname, guest.key);
+  const unoccupied = findClosestUnoccupiedSeat(node);
+  if (unoccupied) {
+    // model.setDataProperty(node.data, guest, guest.key);
+    node.data.guest = guest.key
     model.setDataProperty(guest, "table", node.data.key);
-    model.setDataProperty(guest, "seat", parseFloat(closestseatname));
+    // model.setDataProperty(guest, "seat", 1);
 
     store.dispatch({
       type: 'add match',
@@ -204,12 +205,12 @@ function assignSeat(node, guest) {
 // Position a single guest Node to be at the location of the seat to which they are assigned.
 function positionPersonAtSeat(guest) {
   if (guest instanceof go.GraphObject) throw Error("A guest object must not be a GraphObject: " + guest.toString());
-  if (!guest || !guest.table || !guest.seat) return;
+  if (!guest || !Number.isInteger(guest.table)) return;
   const tempdiagram = diagram;
   var table = tempdiagram.findPartForKey(guest.table);
   var person = tempdiagram.findPartForData(guest);
   if (table && person) {
-    const seat = table.findObject(guest.seat.toString());
+    const seat = table.findObject('1');
     const loc = seat.getDocumentPoint(go.Spot.Center);
     // animate movement, instead of: person.location = loc;
     const animation = new go.Animation();
@@ -238,20 +239,19 @@ export function assignPeopleToSeats(node, coll, pt) {
 }
 
 
-// Position the nodes of all of the guests that are seated at this table
+// Position the nodes of the guest that are seated at this table
 // to be at their corresponding seat elements of the given "Table" Node.
 function positionPeopleAtSeats(node) {
   if (isPerson(node)) {  // refer to the person's table instead
     node = node.diagram.findNodeForKey(node.data.table);
     if (node === null) return;
   }
-  const guests = node.data.guests;
+  const guest = node.data.guest;
   const model = node.diagram.model;
-  for (let seatname in guests) {
-    const guestkey = guests[seatname];
-    const guestdata = model.findNodeDataForKey(guestkey);
-    positionPersonAtSeat(guestdata);
-  }
+
+  const guestdata = model.findNodeDataForKey(guest);
+  positionPersonAtSeat(guestdata);
+
 }
 
 // Automatically drag people Nodes along with the table Node at which they are seated.

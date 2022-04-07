@@ -18,10 +18,10 @@ export function highlightSeats(node, coll, show) {
     // if dragging a Table, don't do any highlighting
     if (isTable(n)) return;
   }
-  if (!node.data.guests) {
-    node.data.guests = {}
-  }
-  const guests = node.data.guests;
+  // if (!node.data.guests) {
+  //   node.data.guests = {}
+  // }
+  const guest = node.data.guest;
   for (const sit = node.elements; sit.next();) {
     const seat = sit.value;
     if (seat.name) {
@@ -30,7 +30,7 @@ export function highlightSeats(node, coll, show) {
       const seatshape = seat.findObject("SEATSHAPE");
       if (!seatshape) continue;
       if (show) {
-        if (guests[seat.name]) {
+        if (guest) {
           seatshape.stroke = "red";
         } else {
           seatshape.stroke = "green";
@@ -67,22 +67,19 @@ export function Seat(number, align, focus) {
 export function findClosestUnoccupiedSeat(node) {
   if (isPerson(node)) {  // refer to the person's table instead
     node = node.diagram.findNodeForKey(node.data.table);
-    if (node === null) return;
+    if (node === null) return false;
   }
-  var guests = node.data.guests;
-  // let closestseatname = null;
-  // let closestseatdist = Infinity;
-  // iterate over all seats in the Node to find one that is not occupied
+  var guest = node.data.guest;
   for (const sit = node.elements; sit.next();) {
     const seat = sit.value;
     if (seat.name) {
       const num = parseFloat(seat.name);
       if (isNaN(num)) continue;  // not really a "seat"
-      if (!guests) guests = [];
-      if (guests[seat.name]) continue;  // already assigned
-      return 1;
+      // if (!guests) guests = [];
+      if (guest) continue;  // already assigned
+      return true;
     }
   }
 
-  return null;
+  return false;
 }

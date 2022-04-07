@@ -13,7 +13,7 @@ import { v4 as uuidv4 } from 'uuid';
     rcp.nodeDataArray = rcp.nodeDataArray.filter(x=>x.category)
     rcp.nodeDataArray.forEach(element => {
       element.loc=undefined
-      element.guests=undefined
+      element.guest=undefined
     });
 
     rcp={recipeName:rcp.recipeName,nodeDataArray:rcp.nodeDataArray,linkDataArray:rcp.linkDataArray}
