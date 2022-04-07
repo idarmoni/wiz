@@ -59,11 +59,11 @@ export const addTab = function (tabid,fileName) {
   if(!_instance) return
   // open tab
   _instance.open({id: tabid, title: fileName, panelComponent: (props) => <TabPanel  index={tabid} tabName={fileName}/>}).then(() => {
-    console.log('tab '+tabid+' is open');
+    // console.log('tab '+tabid+' is open');
   });
   // switch to tab
   _instance.select(tabid).then(() => {
-    console.log('tab '+tabid+' is selected');
+    // console.log('tab '+tabid+' is selected');
   });
 
   changRCPName(fileName,tabid)
@@ -91,7 +91,7 @@ export function execute(){
     recipeid: id.split(' ')[0],
     fbfName:'YRE45.fbf',
     matchs:state.recipeMap[state.currentIndex].matchs}
-var t=state.recipeMap[state.currentIndex]
+// var t=state.recipeMap[state.currentIndex]
   const requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

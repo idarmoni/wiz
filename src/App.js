@@ -1,8 +1,6 @@
 import { SidePannel } from './Accordion';
 import { DirectionStack } from "./TopPannel"
 import React from 'react';
-import * as init from './temp'
-import { Gojstree } from './gojstree'
 
 import TabsManager from './TabsManager';
 

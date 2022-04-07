@@ -13,7 +13,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 
 import Box from '@mui/material/Box';
 
-import RichObjectTreeView from './Tree'
+// import RichObjectTreeView from './Tree'
 import { Gojstree } from './gojstree'
 
 
@@ -83,7 +83,7 @@ export const SidePannel = function () {
 
   for (i in FBFData) {
     // FBFs.push(<RichObjectTreeView dataTree = {FBFData[i]}></RichObjectTreeView>)
-    console.log(FBFData[i])
+    // console.log(FBFData[i])
     FBFs.push(<Gojstree treedata={FBFData[i]}></Gojstree>)
   }
 
@@ -274,16 +274,10 @@ export const SidePannel = function () {
     </div>
   );
 
-  
-function AddrecipeMatched(matcheFile) {
-  var matchs=
-  
-   [{index: 1, inputKey: 4, fieldname: 'uyrf87.yte.ew.'},
-  {index: 2, inputKey: 5, fieldname: 'uyrf87.yte.gt.'}];
 
-  
+  function AddrecipeMatched(matcheFile) {
 
-  addTab(matcheFile.recipeid + " " + matcheFile.fbfName,
-    matcheFile.recipeName + " " + matcheFile.fbfName)
-}
+    addTab(matcheFile.recipeid + " " + matcheFile.fbfName,
+      matcheFile.recipeName + " " + matcheFile.fbfName)
+  }
 }

@@ -60,7 +60,7 @@ export const DiagramWrapper = function (props) {
 
     // set your license key here before creating the diagram: go.Diagram.licenseKey = "...";
     diagram.addModelChangedListener(function (evt) {
-      var u = JSON.parse(diagram.model.toJson())
+      // var u = JSON.parse(diagram.model.toJson())
       if (evt.isTransactionFinished) {
         store.dispatch({
           type: 'change recipe',
@@ -152,7 +152,7 @@ function unassignSeat(tempdiagram, guest) {
       // var temp = store.getState().recipeMap[store.getState().currentIndex].matchs
       store.dispatch({
         type: 'filter match',
-        predicate: x => !(x.fieldname == guest.fieldname && x.inputKey == table.key)
+        predicate: x => !(x.fieldname === guest.fieldname && x.inputKey === table.key)
       })
       const guests = table.guests;
       if (guests) model.setDataProperty(guests, guest.seat.toString(), undefined);
@@ -196,8 +196,6 @@ function assignSeat(node, guest) {
       inputkey: node.data.key,
       fieldname: guest.fieldname
     })
-    console.log(store.getState().recipeMap[store.getState().currentIndex].matchs)
-
   }
 }
 

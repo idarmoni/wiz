@@ -88,7 +88,7 @@ function makeTemplate(templatejson) {
   var inports = makePorts(templatejson.inports,true)
   var outports = makePorts(templatejson.outports,false)
   var mySeat = {}
-    if (templatejson.name == 'Input') {
+    if (templatejson.name === 'Input') {
       mySeat = Seat(1, "-0.22 0.7", "0.5 1")
     }
   var node = $(go.Node, "Spot",tableStyle(),

@@ -24,7 +24,7 @@ export default function TabsManager()
     // selectedTabID: '2c6eba56-2b92-4e80-ab78-3093c8c8b4e8',
     selectedTabID: '0',
     onSelect: function ({currentSelectedTabId, previousSelectedTabId}) {
-      console.log('Select the tab '+ currentSelectedTabId);
+      // console.log('Select the tab '+ currentSelectedTabId);
       store.dispatch({
         type: 'change tab',
         index: currentSelectedTabId
