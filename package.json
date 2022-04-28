@@ -2,7 +2,7 @@
   "name": "gojs-react-basic",
   "version": "1.0.1",
   "description": "An example project demonstrating usage of GoJS and React together",
-  "homepage": "./",
+  "homepage": "http://./",
   "main": "src/innpm dex.js",
   "private": true,
   "entities": "['src/**/*.entity.{ts,js}']",
@@ -64,5 +64,13 @@
     "@faker-js/faker": "^6.1.2",
     "concurrently": "^5.3.0",
     "wait-on": "^5.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/idarmoni/wiz.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/idarmoni/wiz/issues"
   }
 }

@@ -11,8 +11,7 @@ import { store } from './store';
 import * as utils from './utils';
 
 
-export default function TabsManager()
-{
+export default function TabsManager() {
   const options = {
     tabs: [
       // {
@@ -23,7 +22,7 @@ export default function TabsManager()
     ],
     // selectedTabID: '2c6eba56-2b92-4e80-ab78-3093c8c8b4e8',
     selectedTabID: '0',
-    onSelect: function ({currentSelectedTabId, previousSelectedTabId}) {
+    onSelect: function ({ currentSelectedTabId, previousSelectedTabId }) {
       // console.log('Select the tab '+ currentSelectedTabId);
       store.dispatch({
         type: 'change tab',
@@ -34,51 +33,52 @@ export default function TabsManager()
   const [TabList, PanelList, ready] = useDynTabs(options);
   ready((instance) => {
     store.dispatch({
-      type:'create instance',
+      type: 'create instance',
       instance: instance
     })
   });
 
   document.addEventListener("contextmenu", (event) => {
-     event.preventDefault();
-   });
+    event.preventDefault();
+  });
 
-   
+
   
   return (
     <>
-      <TabList/>
-        <button onClick={()=>utils.execute()} >test in server</button>
-      <PanelList/>
+      <tr>
+        <TabList />
+      </tr>
+      <PanelList />
     </>
   );
 };
 
 
 export function TabPanel(props) {
-  const { children, index,tabName, ...other } = props;
+  const { children, index, tabName, ...other } = props;
 
-  const rcpid =  index.split(" ")[0]
+  const rcpid = index.split(" ")[0]
 
   // var matchs
   const [matchs, setMatchs] = useState("loading...");
   useEffect(() => {
     const fetchData = async () => {
-  await axios(
-    `http://localhost:3001/matchesFiles/${index}`,
-  ).then(response => {
-    setMatchs(response.data.matchs)
-  })
-    .catch(error => {
-      console.error("error fetching data: ", error);
-    })
-  };
+      await axios(
+        `http://localhost:3001/matchesFiles/${index}`,
+      ).then(response => {
+        setMatchs(response.data.matchs)
+      })
+        .catch(error => {
+          console.error("error fetching data: ", error);
+        })
+    };
     fetchData();
   }, []);
 
   const [data, setData] = useState("");
   const [loading, setLoading] = useState(true);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       await axios(
@@ -95,9 +95,9 @@ export function TabPanel(props) {
     };
 
     fetchData();
-    
-  },[]);
-  
+
+  }, []);
+
   if (loading) return "loading..."
   return (
     <div
@@ -107,7 +107,7 @@ export function TabPanel(props) {
       {...other}
 
     >
-      <Canvas recipe={data} tabName={tabName} rcpid={rcpid} index={index} matchs ={matchs}/>
+      <Canvas recipe={data} tabName={tabName} rcpid={rcpid} index={index} matchs={matchs} />
     </div>
   );
 }
