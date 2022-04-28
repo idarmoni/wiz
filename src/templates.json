@@ -45,6 +45,11 @@
       "outports": ["Sum"]
   },
   {
+    "name": "Python Add", "icon": "plus.png", "color": "deepskyblue", "shape": "RoundedRectangle",
+      "inports": ["X","Y"],
+      "outports": ["Sum"]
+  },
+  {
     "name": "Substract", "icon": "minus.png", "color": "deepskyblue", "shape": "RoundedRectangle",
     "inports": ["X","Y"],
       "outports": ["diff"]

@@ -219,7 +219,7 @@ export const SidePannel = function () {
           <Typography>
             <Palette
               nodeArray={[
-                { "category": "Input" }, { "category": "Table" },
+                { "category": "Input" }, { "category": "Table" },{ "category": "Python Add" },
                 { "category": "Join" }, { "category": "Project" },
                 { "category": "Filter" }, { "category": "Group" },
                 { "category": "Sort" }, { "category": "Output" }

@@ -105,7 +105,7 @@ export const DiagramWrapper = function (props) {
 
     })
     diagram.addDiagramListener('AnimationStarting', e => {
-      if (props.matchs) {
+      if (props.matchs?.length) {
 
         props.matchs.forEach(x => {
           diagram.model.addNodeData(x)
@@ -154,16 +154,14 @@ function unassignSeat(tempdiagram, guest) {
         type: 'filter match',
         predicate: x => !(x.fieldname === guest.fieldname && x.inputKey === table.key)
       })
-      if (guest)/////////////
-        model.setDataProperty(table, guest, undefined);
-
+      table.guest = undefined
     }
   }
   model.setDataProperty(guest, "table", undefined);
   model.setDataProperty(guest, "seat", undefined);
 
 
-  console.log(store.getState().recipeMap[store.getState().currentIndex].matchs)
+  // console.log(store.getState().recipeMap[store.getState().currentIndex].matchs)
 
 }
 
