@@ -175,15 +175,15 @@ function setPalleteTemplates(templatejson)
 }
 
 export const Palette = function (props) {
-  function initPalette() {
-  var temp = require('./templates.json')
   
-  for (const templateindex in temp.Templates)
-  {
-    makeTemplate(temp.Templates[templateindex])
-    setPalleteTemplates(temp.Templates[templateindex])
-  }
-        
+  var templates = props.templates
+    for (const templateindex in templates)
+    {
+      makeTemplate(templates[templateindex])
+      setPalleteTemplates(templates[templateindex])
+    }
+
+  function initPalette() {
     const myPalette = $(go.Palette, {
       nodeTemplateMap: paletteNodeTemplateMap
     });
@@ -196,7 +196,7 @@ export const Palette = function (props) {
       <ReactPalette
         initPalette={initPalette}
         divClassName="palette-component"
-        nodeDataArray={props.nodeArray}
+        nodeDataArray={props.templates.map(x=>({category:x.name}))}
 
       />
     </div>

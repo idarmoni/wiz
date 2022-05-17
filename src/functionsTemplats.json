@@ -1,0 +1,47 @@
+[
+    {
+        "name": "Table", "icon": "table.svg", "color": "aquamarine", "shape": "RoundedRectangle",
+        "inports": [],
+        "outports": ["OUT"]
+      },
+    {
+      "name": "Input", "icon": "input.png", "color": "forestgreen", "shape": "Ellipse",
+        "inports": [],
+        "outports": ["OUT"]
+    },
+    {
+      "name": "Join", "icon": "join.svg", "color": "mediumorchid", "shape": "Ellipse",
+        "inports": ["L","R"],
+        "outports": ["UL","ML","M","MR","UR"]
+    },
+    {
+      "name": "Project", "icon": "project.svg", "color": "darkcyan", "shape": "Diamond",
+        "inports": [""],
+        "outports": ["OUT"]
+    },
+    {
+      "name": "Filter", "icon": "filter.svg", "color": "cornflowerblue", "shape": "RoundedRectangle",
+        "inports": [""],
+        "outports": ["OUT","INV"]
+    },
+    {
+      "name": "Group", "icon": "group.svg", "color": "mediumpurple", "shape": "Diamond",
+        "inports": [""],
+        "outports": ["OUT"]
+    },
+    {
+      "name": "Sort", "icon": "sort.svg", "color": "sienna", "shape": "RoundedRectangle",
+        "inports": [""],
+        "outports": ["OUT"]
+    },
+    {
+      "name": "Output", "icon": "upload.svg", "color": "darkred", "shape": "Ellipse",
+        "inports": [""],
+        "outports": []
+    },
+  {
+    "name": "Python Add", "icon": "plus.png", "color": "deepskyblue", "shape": "RoundedRectangle",
+      "inports": ["X","Y"],
+      "outports": ["Sum"]
+  }
+]

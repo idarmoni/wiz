@@ -8,6 +8,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { addTab, changtabName } from './utils';
 
+
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 
@@ -16,7 +17,8 @@ import Box from '@mui/material/Box';
 // import RichObjectTreeView from './Tree'
 import { Gojstree } from './gojstree'
 
-
+import templates from './basicMathTemplates'
+import templates2 from './functionsTemplats'
 
 
 export const SidePannel = function () {
@@ -77,7 +79,7 @@ export const SidePannel = function () {
     fetchData();
   }, []);
 
-  const [FBFData, setFBFData] = useState("loading...");
+  const [FBFData, setFBFData] = useState([]);
   var FBFs = []
 
 
@@ -93,6 +95,23 @@ export const SidePannel = function () {
         `http://localhost:3001/fbf/`,
       ).then(response => {
         setFBFData(response.data)
+      })
+        .catch(error => {
+          console.error("error fetching data: ", error);
+        })
+    };
+    fetchData();
+  }, []);
+
+  
+  const [pythonFuncs, setPythonFuncs] = useState([])
+    
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios(
+        `http://localhost:3001/pythonFunctions/`,
+      ).then(response => {
+         setPythonFuncs( response.data)
       })
         .catch(error => {
           console.error("error fetching data: ", error);
@@ -218,12 +237,8 @@ export const SidePannel = function () {
 
           <Typography>
             <Palette
-              nodeArray={[
-                { "category": "Input" }, { "category": "Table" },{ "category": "Python Add" },
-                { "category": "Join" }, { "category": "Project" },
-                { "category": "Filter" }, { "category": "Group" },
-                { "category": "Sort" }, { "category": "Output" }
-              ]} />
+              templates={templates2}
+               />
           </Typography>
         </AccordionDetails>
       </Accordion>
@@ -237,15 +252,24 @@ export const SidePannel = function () {
         </AccordionSummary>
         <AccordionDetails>
           <Palette
-            nodeArray={[
-              { "category": "Add" }, { "category": "Substract" },
-              { "category": "Mult" }, { "category": "Division" },
-              { "category": "Cos" }, { "category": "Sin" },
-              { "category": "Tan" }, { "category": "Square" },
-              { "category": "Exponent" }, { "category": "Radian2Degree" },
-              { "category": "Degree2Radian" }, { "category": "Avarage" },
+            templates = {templates}
+          />
 
-            ]} />
+        </AccordionDetails>
+      </Accordion>
+
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}>
+
+          <Typography>python funcs</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Palette
+            templates = {pythonFuncs}
+
+          />
+          {/* {typeof pythonFuncs[0]} */}
 
         </AccordionDetails>
       </Accordion>
