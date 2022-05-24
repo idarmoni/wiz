@@ -7,6 +7,7 @@ import Palette from './Palette';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { addTab, changtabName } from './utils';
+import  UploadButton from './temp'
 
 
 import Button from '@mui/material/Button';
@@ -17,9 +18,11 @@ import Box from '@mui/material/Box';
 // import RichObjectTreeView from './Tree'
 import { Gojstree } from './gojstree'
 
-import templates from './basicMathTemplates'
-import templates2 from './functionsTemplats'
+import basicMathTemplates from './basicMathTemplates'
+import functionsTemplats from './functionsTemplats'
 
+
+const equals = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
 export const SidePannel = function () {
 
@@ -30,7 +33,7 @@ export const SidePannel = function () {
   for (var i in recipesData) {
     const index = i
     recipes.push(
-      <Button id={recipesData[index].id + '_button'} onClick={() => addTab(recipesData[index].id, recipesData[index].recipeName)}
+      <Button id={recipesData[index].id + '_rcp_button'} key={recipesData[index].id} onClick={() => addTab(recipesData[index].id, recipesData[index].recipeName)}
         onContextMenu={() => changtabName(recipesData[index].id)}
       >
         {recipesData[i].recipeName}
@@ -54,13 +57,11 @@ export const SidePannel = function () {
 
   const [matchesFilessData, setmMtchesFilesData] = useState("loading...");
   var matchesFiles = []
-  for (var i in matchesFilessData) {
+  for (i in matchesFilessData) {
     const index = i
     const matcheFile = matchesFilessData[index]
     matchesFiles.push(
-      <Button id={matcheFile.recipeid + '_button'} onClick={() => AddrecipeMatched(matcheFile)}
-        onContextMenu={() => changtabName(matcheFile.recipeid)}
-      >
+      <Button id={matcheFile.recipeid + '_matche_button'} key={matcheFile.recipeid} onClick={() => AddrecipeMatched(matcheFile)}>
         {matchesFilessData[i].recipeName + " " + matchesFilessData[i].fbfName}
       </Button>)
   }
@@ -82,10 +83,7 @@ export const SidePannel = function () {
   const [FBFData, setFBFData] = useState([]);
   var FBFs = []
 
-
   for (i in FBFData) {
-    // FBFs.push(<RichObjectTreeView dataTree = {FBFData[i]}></RichObjectTreeView>)
-    // console.log(FBFData[i])
     FBFs.push(<Gojstree treedata={FBFData[i]}></Gojstree>)
   }
 
@@ -103,21 +101,32 @@ export const SidePannel = function () {
     fetchData();
   }, []);
 
-  
+
   const [pythonFuncs, setPythonFuncs] = useState([])
-    
+  var prevfunc=[]
   useEffect(() => {
+
+    // const intervalId = setInterval(() => {  //assign interval to a variable to clear it.
     const fetchData = async () => {
       await axios(
         `http://localhost:3001/pythonFunctions/`,
       ).then(response => {
-         setPythonFuncs( response.data)
+        if( ! equals(response.data, prevfunc)){
+          setPythonFuncs(response.data);
+        }
+        prevfunc = response.data
+
       })
         .catch(error => {
           console.error("error fetching data: ", error);
         })
     };
     fetchData();
+    const intervalId = setInterval(() => {  //assign interval to a variable to clear it.
+
+  }, 5000)
+
+  return () => clearInterval(intervalId); //This is important
   }, []);
 
   return (
@@ -227,73 +236,62 @@ export const SidePannel = function () {
 
       <Accordion>
         <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
+          expandIcon={<ExpandMoreIcon />}>
           <Typography>functions</Typography>
         </AccordionSummary>
         <AccordionDetails>
 
-          <Typography>
-            <Palette
-              templates={templates2}
-               />
-          </Typography>
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+            >
+              <Typography>general</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+
+              <Typography>
+                <Palette
+                  templates={functionsTemplats}
+                />
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+
+
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}>
+              <Typography>Basic Math</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Palette templates={basicMathTemplates} />
+            </AccordionDetails>
+          </Accordion>
+
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}>
+              <Typography>python</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+            <UploadButton/>
+              <Palette templates={pythonFuncs} />
+            </AccordionDetails>
+          </Accordion>
+
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}>
+              <Typography>matlab</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Palette templates={[]} />
+            </AccordionDetails>
+          </Accordion>
         </AccordionDetails>
+
       </Accordion>
 
-
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}>
-
-          <Typography>Basic Math</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Palette
-            templates = {templates}
-          />
-
-        </AccordionDetails>
-      </Accordion>
-
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}>
-
-          <Typography>python funcs</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Palette
-            templates = {pythonFuncs}
-
-          />
-          {/* {typeof pythonFuncs[0]} */}
-
-        </AccordionDetails>
-      </Accordion>
-
-
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-        >
-          <Typography>Graphs</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-        </AccordionDetails>
-      </Accordion>
-
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-        >
-          <Typography>Widgets</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-        </AccordionDetails>
-      </Accordion>
 
     </div>
   );

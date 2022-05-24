@@ -10,14 +10,14 @@ class App extends React.Component {
     return (
       <div>
         <DirectionStack />
-        <tr>
+        <div>
           <td style={{ width: 200 }}>
             <SidePannel />
           </td>
           <td style={{ width: 2000 }}>
             <TabsManager />
           </td>
-        </tr>
+        </div>
       </div>
     )
   }

@@ -2,7 +2,7 @@ import * as go from 'gojs';
 import { ReactDiagram } from 'gojs-react';
 import { store } from './store'
 import { nodeTemplateMap } from './Palette'
-import { isTable, isPerson, findClosestUnoccupiedSeat } from './temp'
+import { isTable, isPerson, findClosestUnoccupiedSeat } from './seatUtils'
 
 
 var diagram
@@ -106,7 +106,7 @@ export const DiagramWrapper = function (props) {
     })
     diagram.addDiagramListener('AnimationStarting', e => {
       if (props.matchs?.length) {
-
+        try{
         props.matchs.forEach(x => {
           diagram.model.addNodeData(x)
           var inputNode = diagram.findNodeForKey(x.inputKey)
@@ -114,6 +114,9 @@ export const DiagramWrapper = function (props) {
           positionPeopleAtSeats(inputNode);
         })
       }
+      catch(err){}
+    }
+    
     })
 
     return diagram;
@@ -129,10 +132,6 @@ export const DiagramWrapper = function (props) {
           initDiagram={initDiagram}
           nodeDataArray={props.model.nodeDataArray}
           linkDataArray={props.model.linkDataArray}
-
-        // modelData={props.model.modelData}
-        // onModelChange={props.onModelChange}
-        // skipsDiagramUpdate={props.skipsDiagramUpdate}
         />
       </div>
     </div>
@@ -159,10 +158,6 @@ function unassignSeat(tempdiagram, guest) {
   }
   model.setDataProperty(guest, "table", undefined);
   model.setDataProperty(guest, "seat", undefined);
-
-
-  // console.log(store.getState().recipeMap[store.getState().currentIndex].matchs)
-
 }
 
 // Given a "Table" Node, assign one guest data to a seat at that table.
@@ -189,6 +184,7 @@ function assignSeat(node, guest) {
     model.setDataProperty(guest, "table", node.data.key);
     // model.setDataProperty(guest, "seat", 1);
 
+    
     store.dispatch({
       type: 'add match',
       index: guest.index,

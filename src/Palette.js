@@ -1,7 +1,7 @@
 
 import * as go from 'gojs';
 import { ReactPalette } from 'gojs-react';
-import {Seat,highlightSeats} from './temp'
+import {Seat,highlightSeats} from './seatUtils'
 import {assignPeopleToSeats} from './DiagramWrapper'
 
 var $ = go.GraphObject.make;
@@ -192,14 +192,12 @@ export const Palette = function (props) {
   };
 
   return (
-    <div>
       <ReactPalette
         initPalette={initPalette}
         divClassName="palette-component"
         nodeDataArray={props.templates.map(x=>({category:x.name}))}
 
       />
-    </div>
 
   )
 

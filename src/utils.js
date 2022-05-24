@@ -108,7 +108,7 @@ export const changtabName = function (tabid) {
   if (!enteredName) return;
   //changRCPName(enteredName,data[index].id)
   addTab(tabid, enteredName)
-  document.getElementById(tabid + '_button').textContent = enteredName
+  document.getElementById(tabid + '_rcp_button').textContent = enteredName
   var _instance = store.getState().instance
   _instance.setTab(tabid, { title: enteredName })
   _instance.refresh()
@@ -132,7 +132,8 @@ export function execute() {
   fetch(`http://localhost:3001/execute`, requestOptions)
     .then(response => response.json())
     .then(res => {addTabChart(id.split(' ')[0] + 'YRE45.fbf' + 'lineChart', res) 
-  console.log(res) });
+  // console.log(res)
+ });
 }
 
 export function changRCPName(fileName, tabid) {

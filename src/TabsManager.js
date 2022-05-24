@@ -8,7 +8,6 @@ import 'react-dyn-tabs/themes/react-dyn-tabs-card.css';
 import useDynTabs from 'react-dyn-tabs';
 import { store } from './store';
 
-import * as utils from './utils';
 
 
 export default function TabsManager() {
@@ -45,12 +44,12 @@ export default function TabsManager() {
 
   
   return (
-    <>
+    <table>
       <tr>
         <TabList />
       </tr>
       <PanelList />
-    </>
+    </table>
   );
 };
 

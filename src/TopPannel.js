@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 
 import SaveIcon from '@mui/icons-material/Save';
-import FolderOpenIcon from '@mui/icons-material/FolderOpen';
+// import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import FileOpenIcon from '@mui/icons-material/FileOpen';
@@ -21,7 +21,7 @@ export class DirectionStack extends React.Component {
       <div>
         <Stack direction="row" spacing={2}>
 
-          <Button><FolderOpenIcon /> </Button>
+          {/* <Button><FolderOpenIcon /> </Button> */}
           <Button onClick={utils.addNewTab} title={'new recipe'}><FileOpenIcon /></Button>
           <Button onClick={utils.saveall} title={'save all'}><SaveAltIcon/></Button>
           <Button onClick={utils.save} title = {'save'}><SaveIcon/></Button>
