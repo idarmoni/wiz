@@ -1,7 +1,7 @@
 {
-  "name": "gojs-react-basic",
+  "name": "wiz-client",
   "version": "1.0.1",
-  "description": "An example project demonstrating usage of GoJS and React together",
+  "description": "Unified Decoding Tool Project. Client side",
   "homepage": "http://./",
   "main": "src/innpm dex.js",
   "private": true,
@@ -19,7 +19,7 @@
   "author": "Northwoods Software",
   "dependencies": {
     "@kurkle/color": "^0.1.9",
-    "@mui/icons-material": "^5.2.5",
+    "@mui/icons-material": "^5.2.1",
     "@mui/lab": "^5.0.0-alpha.73",
     "@mui/material": "^5.2.6",
     "axios": "^0.24.0",
