@@ -36,17 +36,17 @@
     },
     {
       "name": "Output_indexChart", "icon": "upload.svg", "color": "darkred", "shape": "Ellipse",
-        "inports": ["Y"],
+        "inports": ["filter","Y"],
         "outports": []
     },
     {
       "name": "Output_scatterChart", "icon": "upload.svg", "color": "red", "shape": "Ellipse",
-        "inports": ["X","Y"],
+        "inports": ["filter","X","Y"],
         "outports": []
     },
-  {
-    "name": "Python Add", "icon": "plus.png", "color": "deepskyblue", "shape": "RoundedRectangle",
-      "inports": ["X","Y"],
-      "outports": ["Sum"]
-  }
+    {
+      "name": "if_equal", "icon": "filter.svg", "color": "cornflowerblue", "shape": "RoundedRectangle",
+        "inports": ["X","Y"],
+        "outports": ["flag"]
+    }
 ]
