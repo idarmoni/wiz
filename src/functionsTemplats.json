@@ -35,8 +35,13 @@
         "outports": ["OUT"]
     },
     {
-      "name": "Output", "icon": "upload.svg", "color": "darkred", "shape": "Ellipse",
-        "inports": [""],
+      "name": "Output_indexChart", "icon": "upload.svg", "color": "darkred", "shape": "Ellipse",
+        "inports": ["Y"],
+        "outports": []
+    },
+    {
+      "name": "Output_scatterChart", "icon": "upload.svg", "color": "red", "shape": "Ellipse",
+        "inports": ["X","Y"],
         "outports": []
     },
   {

@@ -59,7 +59,6 @@ export function TabPanel(props) {
 
   const rcpid = index.split(" ")[0]
 
-  // var matchs
   const [matchs, setMatchs] = useState("loading...");
   useEffect(() => {
     const fetchData = async () => {

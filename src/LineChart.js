@@ -32,11 +32,13 @@ export function LineChart(props) {
       },
       title: {
         display: true,
-        text: 'chart line',
+        text: 'line chart',
       },
     },
   };
-  
+  // var charts = props.LineCharts||[]
+  console.log('props.LineCharts',props.LineCharts)
+  if(props.LineCharts.length==0)return;
   const max = Math.max(...props.LineCharts.map(x=>x.data.length))
   const labels = [...Array(max).keys()]
   var datasets = []

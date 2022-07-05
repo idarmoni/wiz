@@ -7,7 +7,7 @@ import Palette from './Palette';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { addTab, changtabName } from './utils';
-import  UploadButton from './temp'
+import  UploadButton from './uploadFile'
 
 
 import Button from '@mui/material/Button';
@@ -61,8 +61,8 @@ export const SidePannel = function () {
     const index = i
     const matcheFile = matchesFilessData[index]
     matchesFiles.push(
-      <Button id={matcheFile.recipeid + '_matche_button'} key={matcheFile.recipeid} onClick={() => AddrecipeMatched(matcheFile)}>
-        {matchesFilessData[i].recipeName + " " + matchesFilessData[i].fbfName}
+      <Button id={matcheFile.recipeid + '_matche_button'}  onClick={() => AddrecipeMatched(matcheFile)}>
+        {matchesFilessData[i].recipeName}
       </Button>)
   }
 
@@ -81,11 +81,7 @@ export const SidePannel = function () {
   }, []);
 
   const [FBFData, setFBFData] = useState([]);
-  var FBFs = []
-
-  for (i in FBFData) {
-    FBFs.push(<Gojstree treedata={FBFData[i]}></Gojstree>)
-  }
+  var FBFs = <Gojstree treedata={FBFData}></Gojstree>
 
   useEffect(() => {
     const fetchData = async () => {
@@ -279,15 +275,6 @@ export const SidePannel = function () {
             </AccordionDetails>
           </Accordion>
 
-          <Accordion>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}>
-              <Typography>matlab</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Palette templates={[]} />
-            </AccordionDetails>
-          </Accordion>
         </AccordionDetails>
 
       </Accordion>
@@ -298,8 +285,10 @@ export const SidePannel = function () {
 
 
   function AddrecipeMatched(matcheFile) {
+    // addTab(matcheFile.recipeid,matcheFile.recipeName)
 
-    addTab(matcheFile.recipeid + " " + matcheFile.fbfName,
-      matcheFile.recipeName + " " + matcheFile.fbfName)
+    console.log('matcheFile',matcheFile)
+    var matchID = matcheFile.id.split(' ')
+    addTab(matcheFile.id,matcheFile.recipeName + " match #" + matchID[1])
   }
 }

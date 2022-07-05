@@ -120,7 +120,6 @@ export function execute() {
   var id = state.currentIndex
   var topost = {
     recipeid: id.split(' ')[0],
-    fbfName: 'YRE45.fbf',
     matchs: state.recipeMap[state.currentIndex].matchs
   }
   // var t=state.recipeMap[state.currentIndex]
@@ -131,8 +130,7 @@ export function execute() {
   };
   fetch(`http://localhost:3001/execute`, requestOptions)
     .then(response => response.json())
-    .then(res => {addTabChart(id.split(' ')[0] + 'YRE45.fbf' + 'lineChart', res) 
-  // console.log(res)
+    .then(res => {addTabChart(id.split(' ')[0] + 'Charts', res) 
  });
 }
 
@@ -144,17 +142,17 @@ export function changRCPName(fileName, tabid) {
   })
 }
 
-export const addTabChart = function (tabid, LineCharts) {
-  // console.log(LineCharts)
+export const addTabChart = function (tabid, Charts) {
   var _instance = store.getState().instance
   if (!_instance) return
   // open tab
+  console.log('Charts',Charts)
   _instance.open({    id: tabid, title: tabid  })
   _instance.setTab(tabid, { panelComponent: (props) =>
     <div>
-      <LineChart LineCharts={LineCharts[0]} />
+      <LineChart LineCharts={Charts.LineChart} />
 
-      <ScatterChart LineCharts={LineCharts[1]} />
+      <ScatterChart LineCharts={Charts.ScatterChart} />
 
     </div> })
   _instance.refresh()

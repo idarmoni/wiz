@@ -28,7 +28,7 @@ export default function UploadButton() {
             file,
         );
         }
-        console.log('post')
+        // console.log('post')
 
         // Request made to the backend api
         // Send formData object
