@@ -146,7 +146,6 @@ export const addTabChart = function (tabid, Charts) {
   var _instance = store.getState().instance
   if (!_instance) return
   // open tab
-  console.log('Charts',Charts)
   _instance.open({    id: tabid, title: tabid  })
   _instance.setTab(tabid, { panelComponent: (props) =>
     <div>

@@ -55,15 +55,23 @@ export default function TabsManager() {
 
 
 export function TabPanel(props) {
-  const { children, index, tabName, ...other } = props;
+  const { children,index, tabName, ...other } = props;
+  // console.log('index',index)
+  // console.log('props',props)
+  // const index = rcpid+ ' '+matchID
+  const [rcpid,matchID] = index.split(" ")
+  // const matchID = index.split(" ")[1]
 
-  const rcpid = index.split(" ")[0]
+  // const rcpid = index.split(" ")[0]
 
   const [matchs, setMatchs] = useState("loading...");
+  console.log(rcpid,matchID,index)
   useEffect(() => {
     const fetchData = async () => {
       await axios(
+        // `http://localhost:3001/matchesFiles/${rcpid} ${matchID}`,
         `http://localhost:3001/matchesFiles/${index}`,
+
       ).then(response => {
         setMatchs(response.data.matchs)
       })
@@ -96,6 +104,8 @@ export function TabPanel(props) {
 
   }, []);
 
+  console.log('rcpid',rcpid)
+  console.log('matchs',matchs)
   if (loading) return "loading..."
   return (
     <div
@@ -105,7 +115,7 @@ export function TabPanel(props) {
       {...other}
 
     >
-      <Canvas recipe={data} tabName={tabName} rcpid={rcpid} index={index} matchs={matchs} />
+      <Canvas recipe={data} tabName={tabName} rcpid={rcpid} matchID = {matchID}  index={index} matchs={matchs} />
     </div>
   );
 }
