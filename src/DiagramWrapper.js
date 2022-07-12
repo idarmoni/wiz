@@ -9,7 +9,7 @@ var diagram
 var $ = go.GraphObject.make;
 
 export const DiagramWrapper = function (props) {
-  console.log(props)
+  console.log('props',props)
   diagram =
     $(go.Diagram,
       {

@@ -36,8 +36,6 @@ export function LineChart(props) {
       },
     },
   };
-  // var charts = props.LineCharts||[]
-  console.log('props.LineCharts',props.LineCharts)
   if(props.LineCharts.length==0)return;
   const max = Math.max(...props.LineCharts.map(x=>x.data.length))
   const labels = [...Array(max).keys()]

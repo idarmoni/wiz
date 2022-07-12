@@ -28,7 +28,7 @@ export const SidePannel = function () {
 
 
 
-  const [recipesData, setRecipesData] = useState("loading...");
+  const [recipesData, setRecipesData] = useState([]);
   var recipes = []
   for (var i in recipesData) {
     const index = i
@@ -55,14 +55,17 @@ export const SidePannel = function () {
   }, []);
 
 
-  const [matchesFilessData, setmMtchesFilesData] = useState("loading...");
+  const [matchesFilessData, setmMtchesFilesData] = useState([]);
   var matchesFiles = []
   for (i in matchesFilessData) {
     const index = i
     const matcheFile = matchesFilessData[index]
+    console.log(matcheFile)
+    var [rcpID,matchID] = [matcheFile.rcpid,matcheFile.matchID]
+    // var [rcpID,matchID] = matcheFile.id.split(' ')
     matchesFiles.push(
-      <Button id={matcheFile.recipeid + '_matche_button'} onClick={() => AddrecipeMatched(matcheFile)}>
-        {matchesFilessData[i].recipeName}
+      <Button id={rcpID + '_matche_button'} onClick={() => AddrecipeMatched(matcheFile)}>
+        {matcheFile.recipeName + ' match #' + matchID}
       </Button>)
   }
 
@@ -287,10 +290,7 @@ export const SidePannel = function () {
 
 
   function AddrecipeMatched(matcheFile) {
-    // addTab(matcheFile.recipeid,matcheFile.recipeName)
-
-    console.log('matcheFile', matcheFile)
-    var matchID = matcheFile.id.split(' ')
-    addTab(matcheFile.id, matcheFile.recipeName + " match #" + matchID[1])
+    const matchID = matcheFile.id.split(' ')[1]
+    addTab(matcheFile.id, matcheFile.recipeName + " match #" + matchID)
   }
 }
