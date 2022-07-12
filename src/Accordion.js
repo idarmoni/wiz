@@ -7,7 +7,7 @@ import Palette from './Palette';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { addTab, changtabName } from './utils';
-import  UploadButton from './uploadFile'
+import UploadButton from './uploadFile'
 
 
 import Button from '@mui/material/Button';
@@ -61,7 +61,7 @@ export const SidePannel = function () {
     const index = i
     const matcheFile = matchesFilessData[index]
     matchesFiles.push(
-      <Button id={matcheFile.recipeid + '_matche_button'}  onClick={() => AddrecipeMatched(matcheFile)}>
+      <Button id={matcheFile.recipeid + '_matche_button'} onClick={() => AddrecipeMatched(matcheFile)}>
         {matchesFilessData[i].recipeName}
       </Button>)
   }
@@ -99,7 +99,7 @@ export const SidePannel = function () {
 
 
   const [pythonFuncs, setPythonFuncs] = useState([])
-  var prevfunc=[]
+  var prevfunc = []
   useEffect(() => {
 
     // const intervalId = setInterval(() => {  //assign interval to a variable to clear it.
@@ -107,7 +107,7 @@ export const SidePannel = function () {
       await axios(
         `http://localhost:3001/pythonFunctions/`,
       ).then(response => {
-        if( ! equals(response.data, prevfunc)){
+        if (!equals(response.data, prevfunc)) {
           setPythonFuncs(response.data);
         }
         prevfunc = response.data
@@ -118,11 +118,13 @@ export const SidePannel = function () {
         })
     };
     fetchData();
+
     const intervalId = setInterval(() => {  //assign interval to a variable to clear it.
+      fetchData();
 
-  }, 5000)
+    }, 5000)
 
-  return () => clearInterval(intervalId); //This is important
+    return () => clearInterval(intervalId); //This is important
   }, []);
 
   return (
@@ -270,7 +272,7 @@ export const SidePannel = function () {
               <Typography>python</Typography>
             </AccordionSummary>
             <AccordionDetails>
-            <UploadButton/>
+              <UploadButton />
               <Palette templates={pythonFuncs} />
             </AccordionDetails>
           </Accordion>
@@ -287,8 +289,8 @@ export const SidePannel = function () {
   function AddrecipeMatched(matcheFile) {
     // addTab(matcheFile.recipeid,matcheFile.recipeName)
 
-    console.log('matcheFile',matcheFile)
+    console.log('matcheFile', matcheFile)
     var matchID = matcheFile.id.split(' ')
-    addTab(matcheFile.id,matcheFile.recipeName + " match #" + matchID[1])
+    addTab(matcheFile.id, matcheFile.recipeName + " match #" + matchID[1])
   }
 }

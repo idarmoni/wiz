@@ -107,17 +107,19 @@ export const DiagramWrapper = function (props) {
     })
     diagram.addDiagramListener('AnimationStarting', e => {
       if (props.matchs?.length) {
-        try{
-        props.matchs.forEach(x => {
-          diagram.model.addNodeData(x)
-          var inputNode = diagram.findNodeForKey(x.inputKey)
-          assignSeat(inputNode, x)
-          positionPeopleAtSeats(inputNode);
-        })
+        try {
+          props.matchs.forEach(x => {
+            diagram.model.addNodeData(x)
+            var inputNode = diagram.findNodeForKey(x.inputKey)
+            assignSeat(inputNode, x)
+            positionPeopleAtSeats(inputNode);
+          })
+        }
+        catch (err) {
+          console.log(props.matchs)
+         }
       }
-      catch(err){}
-    }
-    
+
     })
 
     return diagram;
@@ -186,7 +188,7 @@ function assignSeat(node, guest) {
     model.setDataProperty(guest, "table", node.data.key);
     // model.setDataProperty(guest, "seat", 1);
 
-    
+
     store.dispatch({
       type: 'add match',
       index: guest.index,
