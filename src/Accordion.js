@@ -66,6 +66,7 @@ export const SidePannel = function () {
     matchesFiles.push(
       <Button id={rcpID + '_matche_button'} onClick={() => AddrecipeMatched(matcheFile)}>
         {matcheFile.recipeName + ' match #' + matchID}
+
       </Button>)
   }
 
@@ -292,5 +293,6 @@ export const SidePannel = function () {
   function AddrecipeMatched(matcheFile) {
     const matchID = matcheFile.id.split(' ')[1]
     addTab(matcheFile.id, matcheFile.recipeName + " match #" + matchID)
+
   }
 }
