@@ -65,7 +65,6 @@ export function TabPanel(props) {
   // const rcpid = index.split(" ")[0]
 
   const [matchs, setMatchs] = useState("loading...");
-  console.log(rcpid,matchID,index)
   useEffect(() => {
     const fetchData = async () => {
       await axios(
@@ -104,8 +103,6 @@ export function TabPanel(props) {
 
   }, []);
 
-  console.log('rcpid',rcpid)
-  console.log('matchs',matchs)
   if (loading) return "loading..."
   return (
     <div
@@ -115,7 +112,7 @@ export function TabPanel(props) {
       {...other}
 
     >
-      <Canvas recipe={data} tabName={tabName} rcpid={rcpid} matchID = {matchID}  index={index} matchs={matchs} />
+      <Canvas recipe={data} tabName={tabName} rcpid={rcpid} matchid = {matchID}  index={index} matchs={matchs} />
     </div>
   );
 }

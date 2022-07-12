@@ -9,7 +9,6 @@ var diagram
 var $ = go.GraphObject.make;
 
 export const DiagramWrapper = function (props) {
-  console.log('props',props)
   diagram =
     $(go.Diagram,
       {
@@ -116,7 +115,7 @@ export const DiagramWrapper = function (props) {
           })
         }
         catch (err) {
-          console.log(props.matchs)
+          console.error(props.matchs)
          }
       }
 
@@ -175,7 +174,6 @@ function assignSeat(node, guest) {
 
   // in case the guest used to be assigned to a different seat, perhaps at a different table
   unassignSeat(node.diagram, guest);
-  // console.log(guest)
 
   const model = node.diagram.model;
   // if (!node.data.guests) node.data.guests = {}

@@ -120,8 +120,10 @@ export function execute() {
   var id = state.currentIndex
   var topost = {
     recipeid: id.split(' ')[0],
+    matchid: id.split(' ')[1],//todo:
     matchs: state.recipeMap[state.currentIndex].matchs
   }
+  console.log('topost',topost)
   // var t=state.recipeMap[state.currentIndex]
   const requestOptions = {
     method: 'POST',
@@ -130,7 +132,7 @@ export function execute() {
   };
   fetch(`http://localhost:3001/execute`, requestOptions)
     .then(response => response.json())
-    .then(res => {addTabChart(id.split(' ')[0] + 'Charts', res) 
+    .then(res => {addTabChart(id + ' Charts', res) 
  });
 }
 

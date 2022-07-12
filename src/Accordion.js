@@ -60,9 +60,7 @@ export const SidePannel = function () {
   for (i in matchesFilessData) {
     const index = i
     const matcheFile = matchesFilessData[index]
-    console.log(matcheFile)
-    var [rcpID,matchID] = [matcheFile.rcpid,matcheFile.matchID]
-    // var [rcpID,matchID] = matcheFile.id.split(' ')
+    var [rcpID,matchID] = matcheFile.id.split(' ')
     matchesFiles.push(
       <Button id={rcpID + '_matche_button'} onClick={() => AddrecipeMatched(matcheFile)}>
         {matcheFile.recipeName + ' match #' + matchID}

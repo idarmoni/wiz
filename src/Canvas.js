@@ -215,7 +215,7 @@ class Canvas extends React.Component {
       tabName: this.props.tabName,
       index: this.props.index,
       matchs: this.props.matchs,
-      matchid:this.props.rcpid,
+      matchid:this.props.matchid,
       model: this.state.model,
       skipsDiagramUpdate: this.state.skipsDiagramUpdate,
       onDiagramEvent: this.handleDiagramEvent,
